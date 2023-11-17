@@ -128,22 +128,44 @@ void _offsets_init(void) {
     NSString *device = [NSString stringWithUTF8String: get_current_deviceModel()];
     // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/proc_internal.h#L227
     off_p_list_le_prev = 0x8;
+if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
+    off_p_name = 0x389;
+} else {
     off_p_name = 0x2d9;
+}
     off_p_pid = 0x68;
     off_p_ucred = 0xd8;
     off_p_task = 0x10;
-    off_p_csflags = 0x300;
+if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
+    off_p_csflags = 0x1C;
+} else {
+    off_p_csflags = 0x300;/*EXPORT _cs_entitlement_flags
+                           __TEXT_EXEC:__text:FFFFFFF0073F5254 _cs_entitlement_flags
+                           __TEXT_EXEC:__text:FFFFFFF0073F5254                 LDR             W8, [X0,#0x290]*/ // <- ios 12
+}
     off_p_uid = 0x2c;
     off_p_gid = 0x30;
     off_p_ruid = 0x34;
     off_p_rgid = 0x38;
     off_p_svuid = 0x3c;
     off_p_svgid = 0x40;
-    off_p_textvp = 0x2a8;
-    off_p_pfd = 0x100;
-    off_p_flag = 0x1bc;
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.4")) {
+        off_p_textvp = 0x350;
+    } else if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
+        off_p_textvp = 0x358;
+    } else {
+        off_p_textvp = 0x2a8;
+    }
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
+        off_p_pfd = 0x100;
+    } else {
+        off_p_pfd = 0x100;
 
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/ucred.h#L91
+    }
+
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/ucred.h#L91
     off_u_cr_label = 0x78;
     off_u_cr_uid = 0x18;
     off_u_cr_ruid = 0x1c;
@@ -152,41 +174,65 @@ void _offsets_init(void) {
     off_u_cr_groups = 0x28;
     off_u_cr_rgid = 0x68;
     off_u_cr_svgid = 0x6c;
+    
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/kern/task.h#L157
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
+        off_task_t_flags = 0x3b8;
+        
+    } else {
+        off_task_t_flags = 0x3e8;
+    }
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
+        //off_task_itk_space = 0x330;
+        off_task_itk_space = 0x308;
+    } else {
+        off_task_itk_space = 0x330;
+    }
+    
+    off_task_map = 0x28;    //_get_task_pmap
 
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/kern/task.h#L157
-    off_task_t_flags = 0x3e8;
-    off_task_itk_space = 0x330;
-    off_task_map = 0x28; //_get_task_pmap
-
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/vm/vm_map.h#L471
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/vm/vm_map.h#L471
     off_vm_map_pmap = 0x48;
-
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/arm/pmap.h#L377
+    
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/arm/pmap.h#L377
     off_pmap_ttep = 0x8;
-
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/vnode_internal.h#L142
+    
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/vnode_internal.h#L142
     off_vnode_vu_ubcinfo = 0x78;
     off_vnode_v_name = 0xb8;
     off_vnode_v_parent = 0xc0;
-    off_vnode_v_data = 0xe0;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
+//        off_vnode_v_data = 0xD8;
+        off_vnode_v_data = 0xe0;
 
+    } else {
+        off_vnode_v_data = 0xe0;
+
+    }
+        
     off_fp_glob = 0x10;
-
+    
     off_fg_data = 0x38;
-
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/ubc_internal.h#L149
+    
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/ubc_internal.h#L149
     off_ubc_info_cs_blobs = 0x50;
-
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/ubc_internal.h#L102
+    
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/bsd/sys/ubc_internal.h#L102
     off_cs_blob_csb_platform_binary = 0xb8;
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/ipc/ipc_port.h#L152
 
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/ipc/ipc_port.h#L152
-    // https://github.com/0x7ff/dimentio/blob/7ffffffb4ebfcdbc46ab5e8f1becc0599a05711d/libdimentio.c#L958
-    off_ipc_port_ip_kobject = 0x58;
+    //https://github.com/0x7ff/dimentio/blob/7ffffffb4ebfcdbc46ab5e8f1becc0599a05711d/libdimentio.c#L958
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.4")) {
+        off_ipc_port_ip_kobject = 0x48;
+    } else {
+        off_ipc_port_ip_kobject = 0x58;
 
-    // https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/ipc/ipc_space.h#L128
+    }
+    //https://github.com/apple-oss-distributions/xnu/blob/xnu-8019.41.5/osfmk/ipc/ipc_space.h#L128
     off_ipc_space_is_table = 0x20;
-
+    
     off_amfi_slot = 0x8;
     off_sandbox_slot = 0x10;
 
@@ -345,7 +391,58 @@ void _offsets_init(void) {
             exit(EXIT_FAILURE);
         }
     } else if ([device  isEqual: @"iPhone 7 Plus"]) {
-        
+        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
+           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.7.3")) {
+           // printf("[i] %s offsets selected for iOS 15.7.3\n", device.UTF8String);
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.6")) {
+           // printf("[i] %s offsets selected for iOS 15.6\n", device.UTF8String);
+//    { .task_threads_next = 0x388, .task_threads_prev = 0x390, .map = 0x3a0, .thread_id = 0x440, .object_size = 0x610 }, // iOS 15.4 - 15.7.2 arm64e
+
+            off_kalloc_data_external = 0xFFFFFFF007B91664;//
+            off_kfree_data_external = 0xFFFFFFF007B91F78;//
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
+            off_empty_kdata_page = 0xFFFFFFF009570000;//0xFFFFFFF009574000;//;
+            off_trustcache = 0xFFFFFFF009772F80;
+            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
+            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
+            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
+            off_allproc = 0xFFFFFFF009720BA0;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
+
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.3.1")) {
+           // printf("[i] %s offsets selected for iOS 15.3.1\n", device.UTF8String);
+            off_kalloc_data_external = 0xFFFFFFF007B91664;//
+            off_kfree_data_external = 0xFFFFFFF007B91F78;//
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
+            off_empty_kdata_page = 0xFFFFFFF009570000;//0xFFFFFFF009574000;//;
+            off_trustcache = 0xFFFFFFF009772F80;
+            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
+            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
+            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
+            off_allproc = 0xFFFFFFF009720BA0;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
+
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.2")) {
+            off_kalloc_data_external = 0xFFFFFFF0071CA924;
+            off_kfree_data_external = 0xFFFFFF0071CB0E8;
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C09428;
+            off_empty_kdata_page = 0xFFFFFFF007824000 + 0x100;//done
+            off_trustcache = 0xFFFFFFF0078BD900;
+            off_gphysbase = 0xFFFFFFF0071041B8;
+            off_gphyssize = 0xFFFFFFF0071041D0;
+
+            off_pmap_enter_options_addr = 0xFFFFFFF0072C1BC0;
+            off_allproc = 0xFFFFFFF007898120;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF00713E598;
+            
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
+
+           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
+        } else {
+           // printf("[-] No matching offsets.\n");
+            exit(EXIT_FAILURE);
+        }
     } else if ([device  isEqual: @"iPhone 8"]) {
         if (SYSTEM_VERSION_EQUAL_TO(@"15.2")) {
            off_kalloc_data_external = 0xFFFFFFF0071CA924;
@@ -388,7 +485,41 @@ void _offsets_init(void) {
     } else if ([device  isEqual: @"iPhone 8 Plus"]) {
         
     } else if ([device  isEqual: @"iPhone X"]) {
-        
+        if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
+           // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+            off_kalloc_data_external = 0xFFFFFFF007B994E4;//done
+            off_kfree_data_external = 0xFFFFFFF007B99D58;//done
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083BBD68;//0xFFFFFFF008524900;//????; FFFFFFF0083BB844//
+            off_empty_kdata_page = 0xFFFFFFF009594000 + 0x100;//done
+            off_trustcache = 0xFFFFFFF009797F80;//done
+            off_gphysbase = 0xFFFFFFF0077B7AF0;//0xFFFFFFF0077B7AE8;
+            off_gphyssize = 0xFFFFFFF0077B7B00;//0xFFFFFFF0077B7B08;?
+            off_pmap_enter_options_addr = 0xFFFFFFF007CA2718;//   <- ix 15.1
+            off_allproc = 0xFFFFFFF0097453E0;// <- ix 15.1
+            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EE718;//   <- ix 15.1 & iphone 8 same?  15.1
+
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.2") || SYSTEM_VERSION_EQUAL_TO(@"15.0.1")) {
+           // printf("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String);
+
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
+           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
+            
+            off_kalloc_data_external = 0xFFFFFFF007B91664;//
+            off_kfree_data_external = 0xFFFFFFF007B91F78;//
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
+            off_empty_kdata_page = 0xFFFFFFF009574000;//0xFFFFFFF009574000;//;
+            off_trustcache = 0xFFFFFFF009772F80;
+            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
+            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
+            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
+            off_allproc = 0xFFFFFFF009720BA0;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
+            
+        } else {
+           // printf("[-] No matching offsets.\n");
+            exit(EXIT_FAILURE);
+        }
+
     } else if ([device  isEqual: @"iPhone XS"]) {
         
     } else if ([device  isEqual: @"iPhone XS Max"]) {
