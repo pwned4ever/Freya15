@@ -1,0 +1,11 @@
+Package: libkrw0-kfund
+Name: libkrw0-kfund
+Author: wh1te4ever
+Maintainer: wh1te4ever
+Architecture: iphoneos-arm64
+Version: 101.0
+Provides: libkrw0-plugin
+Priority: optional
+Section: Development
+Description: Plugin for libkrw interacing with kfund-arm64 jailbreakd
+Homepage: https://github.com/wh1te4ever/kfund/tree/arm64
