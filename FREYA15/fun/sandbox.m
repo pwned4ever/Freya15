@@ -72,12 +72,12 @@ uint64_t unsandbox(pid_t pid) {
 //18446744017486185808
         uint64_t proc = proc_of_pid(pid); // pid's proccess structure on the kernel
         
-        uint64_t proc_ro = MAKE_KPTR(kread64(proc + off_p_ro)); // pid credentials
-        uint64_t cr_label = MAKE_KPTR(kread64(proc_ro + off_u_cr_label)); // MAC label
+        uint64_t proc_ro = kread64(proc + off_p_ro); // pid credentials
+        uint64_t cr_label = kread64(proc_ro + off_u_cr_label); // MAC label
         if (cr_label == 0){
             exit(1);
         }
-        uint64_t orig_sb = MAKE_KPTR(kread64(cr_label + off_sandbox_slot));
+        uint64_t orig_sb = kread64(cr_label + off_sandbox_slot);
 
        // uint64_t prock = proc_of_pid(0); // pid's proccess structure on the kernel
        // uint64_t ucredk = kread64(prock + off_p_ro); // pid credentials

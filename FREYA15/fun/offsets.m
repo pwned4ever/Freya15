@@ -453,19 +453,19 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
 
         } else if (SYSTEM_VERSION_EQUAL_TO(@"15.3.1")) {
            // printf("[i] %s offsets selected for iOS 15.3.1\n", device.UTF8String);
-            off_kalloc_data_external = 0xFFFFFFF007B91664;//
-            off_kfree_data_external = 0xFFFFFFF007B91F78;//
+            off_kalloc_data_external = 0xFFFFFFF0071CA928;//
+            off_kfree_data_external = 0xFFFFFFF0071CB0EC;//
             off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
-            off_empty_kdata_page = 0xFFFFFFF009570000;//0xFFFFFFF009574000;//;
-            off_trustcache = 0xFFFFFFF009772F80;
-            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
-            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
-            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
-            off_allproc = 0xFFFFFFF009720BA0;
-            off_pmap_find_phys = 0xFFFFFFF007CA607C;
-            off_ml_phys_read_data = 0xFFFFFFF007CB9860;
-            off_ml_phys_write_data = 0xFFFFFFF007CB9B58;
-            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
+            off_empty_kdata_page = 0xFFFFFFF007820000;//0xFFFFFFF009574000;//;
+            off_trustcache = 0xFFFFFFF0078B98C0;
+            off_gphysbase = 0xFFFFFFF0071041B8;//0xFFFFFFF0070CBA30;
+            off_gphyssize = 0xFFFFFFF0071041D0;//0xFFFFFFF0070CBA48;
+            off_pmap_enter_options_addr = 0xFFFFFFF0072C1DCC;
+            off_allproc = 0xFFFFFF007894110;
+            off_pmap_find_phys = 0xFFFFFFF0072C8F20;
+            off_ml_phys_read_data = 0xFFFFFFF0072DA074;
+            off_ml_phys_write_data = 0xFFFFFFF0072DA2F8;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF00713E598;
 
         } else if (SYSTEM_VERSION_EQUAL_TO(@"15.2")) {
             off_kalloc_data_external = 0xFFFFFFF0071CA924;
