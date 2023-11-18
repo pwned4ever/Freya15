@@ -9,7 +9,6 @@
 #include <UIKit/UIKit.h>
 #include <Foundation/Foundation.h>
 #include <sys/utsname.h>
-#include "../util/utilsZS.h"
 
 uint32_t off_p_list_le_prev = 0;
 uint32_t off_p_name = 0;
@@ -312,7 +311,8 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
            // printf("[i] %s offsets selected for iOS 15.3.1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF00718D748;//done
             off_kfree_data_external =  0xFFFFFFF00718DF0C;//done
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF005AD80B4;//done AppleARMPE iphone 7 and 6s the same throughtout versions ios .1 - .7
+            off_add_x0_x0_0x40_ret = 0xfffffff005bd0054;//0xFFFFFFF005AD7FE0;
+            //FFFFFFF005AD80B4;//done AppleARMPE iphone 7 and 6s the same throughtout versions ios .1 - .7
             off_empty_kdata_page = 0xFFFFFFF0077E0000 + 0x100;//done
             off_trustcache = 0xFFFFFFF0078798C0;//done
             off_gphysbase = 0xFFFFFFF0070CC0C0;//FFFFFFF00714E7C0;//done
@@ -323,7 +323,7 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_read_data = 0xFFFFFFF00729BB60;//done
             off_ml_phys_write_data = 0xFFFFFFF00729BDE4;// done
             off_zm_fix_addr_kalloc =  0xFFFFFFF007106520;// done
-
+            
         } else if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
            // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
             /*off_kalloc_data_external = 0xFFFFFFF007188AE8;//done
@@ -505,7 +505,7 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
         } else if (SYSTEM_VERSION_EQUAL_TO(@"15.2")) {
             off_kalloc_data_external = 0xFFFFFFF0071CA924;
             off_kfree_data_external = 0xFFFFFF0071CB0E8;
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C09428;
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C09428;//FFFFFFF005BB9EEC??
             off_empty_kdata_page = 0xFFFFFFF007824000 + 0x100;//done
             off_trustcache = 0xFFFFFFF0078BD900;
             off_gphysbase = 0xFFFFFFF0071041B8;
@@ -526,7 +526,7 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_kalloc_data_external = 0xFFFFFFF0071C5CC8;//done me
             off_kfree_data_external = 0xFFFFFFF0071C6434;//done me
             
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C13DF0;//
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0059260B4;//0xFFFFFFF005C13DF0;//
             off_empty_kdata_page = 0xFFFFFFF00781C000 + 0x100;//done me
             off_trustcache = 0xFFFFFFF0078B58C0;//done me
             off_gphysbase = 0xFFFFFFF007103B28;//done me

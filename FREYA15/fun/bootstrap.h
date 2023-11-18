@@ -13,6 +13,8 @@
 #include <stdint.h>
 #import <sys/cdefs.h>
 
+void extractGz(const char *from, const char *to);
+
 void patchBaseBinLaunchDaemonPlists(void);
 int extractBootstrap(void);
 int startJBEnvironment(void);

@@ -87,13 +87,8 @@ uint64_t staticTrustCacheUploadFile(trustcache_file *fileToUpload, size_t fileSi
     uint64_t mapSize = sizeof(trustcache_page) + fileSize;
     uint64_t mapKaddr;
 //    uint64_t mapKaddr = kalloc(mapSize);
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
-        mapKaddr = kalloc(FINAL_KFD, mapSize);
 
-        //mapKaddr = kalloc2ndx(FINAL_KFD, mapSize);
-    } else {
         mapKaddr = kalloc(FINAL_KFD, mapSize);
-    }
     //kalloc2ndx(FINAL_KFD, mapSize);
     if (!mapKaddr) {
         printf("failed to allocate memory for trust cache file with size %zX\n", fileSize);
@@ -104,19 +99,8 @@ uint64_t staticTrustCacheUploadFile(trustcache_file *fileToUpload, size_t fileSi
 
     uint64_t mapSelfPtrPtr = mapKaddr + offsetof(trustcache_page, selfPtr);
     uint64_t mapSelfPtr = mapKaddr + offsetof(trustcache_page, file);
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
-        
-       // uint64_t v = (uint64_t)(mapSelfPtr);
-        //do_kwrite((proc_ro) + 0x1CULL, &v, 4);
-        kwrite64(mapSelfPtrPtr, mapSelfPtr);
-        //do_kwrite(mapSelfPtrPtr, &v, 8);
-        //do_kwrite(mapSelfPtrPtr, &v, 8);
-        kwritebuf(mapSelfPtr, fileToUpload, fileSize);
-    } else {
-        kwrite64(mapSelfPtrPtr, mapSelfPtr);
-        kwritebuf(mapSelfPtr, fileToUpload, fileSize);
-
-    }
+    kwrite64(mapSelfPtrPtr, mapSelfPtr);
+    kwritebuf(mapSelfPtr, fileToUpload, fileSize);
     trustCacheListAdd(mapKaddr);
     return mapKaddr;
 }
@@ -136,7 +120,7 @@ int loadTrustCacheBinaries(void) {
 }
 
 int loadTrustCacheBinpack(void) {
-    printf("iosbinpack.tc ret: 0x%llx\n", staticTrustCacheUploadFileAtPath([NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/iosbinpack/iosbinpack.tc"], NULL));
+    //printf("iosbinpack.tc ret: 0x%llx\n", staticTrustCacheUploadFileAtPath([NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/iosbinpack/iosbinpack.tc"], NULL));
     printf("tar.tc ret: 0x%llx\n", staticTrustCacheUploadFileAtPath([NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/iosbinpack/tar.tc"], NULL));
     
     return 0;

@@ -72,25 +72,17 @@
 		<data>
 		MIlK5Zi+G9ukyV6ycrN6E1dJfK4=
 		</data>
-		<key>iosbinpack/bootstrap-iphoneos-arm64.tar</key>
+		<key>iosbinpack/bootstrap-iphoneos-arm64.tar.gz</key>
 		<data>
-		0tg/GjlwtFrd9jvBtwN4W8eZ4x4=
-		</data>
-		<key>iosbinpack/iosbinpack.tar</key>
-		<data>
-		WBH8EIdPEVi+Cu1ZuVgAQR3gkas=
-		</data>
-		<key>iosbinpack/iosbinpack.tc</key>
-		<data>
-		BIBVo3IIEblZxBIhuGQNO1NiQcg=
-		</data>
-		<key>iosbinpack/tar</key>
-		<data>
-		2gJGMXQ6/Eq9SsxlCQaWoi4JkUI=
+		DoD8a/xlky/RQECVmoI2CSmxrwo=
 		</data>
 		<key>iosbinpack/tar.tc</key>
 		<data>
 		F170ityk7fH3gjGfCFhfEZwjV8o=
+		</data>
+		<key>tar.gz</key>
+		<data>
+		vpN6BQs/6tF5hW8rgdkXL89SYfU=
 		</data>
 		<key>unsigned/unsignedhelloworld</key>
 		<data>
@@ -204,32 +196,11 @@
 			4QMmATF0OmZYFXHjMiJ0KxxQtw4TWj8TqmmL78DmWDo=
 			</data>
 		</dict>
-		<key>iosbinpack/bootstrap-iphoneos-arm64.tar</key>
+		<key>iosbinpack/bootstrap-iphoneos-arm64.tar.gz</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ggBGFi8l6PbSDNUZfdATSPG+ubhWxB4XQNMWTDm8xHA=
-			</data>
-		</dict>
-		<key>iosbinpack/iosbinpack.tar</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			uqtsI9f8RQ4TDZHGReDoa5i29NufFAGmTow9NWuE5uY=
-			</data>
-		</dict>
-		<key>iosbinpack/iosbinpack.tc</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			V8klJ9GJr9bjX9DUrHzdvTbC8Q6JC3pGtAsfe9IKcck=
-			</data>
-		</dict>
-		<key>iosbinpack/tar</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			pwIbVUDglx53tuY/VgA5Yt0Z1O18i+Gswh0xm6Q59Q8=
+			wI56lg/pMCpie++foMtqxBhIn7KY9dOZhJAPMrpTvDg=
 			</data>
 		</dict>
 		<key>iosbinpack/tar.tc</key>
@@ -237,6 +208,13 @@
 			<key>hash2</key>
 			<data>
 			r6Tu5KiTUGQ7z62+vYSzYQODddW44Ng45omeSGM0VqQ=
+			</data>
+		</dict>
+		<key>tar.gz</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			61PWhl4M5WC+AL6OlILwdBNKgjFMcjN0iQqwqvGNnyQ=
 			</data>
 		</dict>
 		<key>unsigned/unsignedhelloworld</key>

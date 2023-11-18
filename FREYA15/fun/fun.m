@@ -37,11 +37,11 @@
 int do_fun(void) {
   //  dispatch_sync( dispatch_get_main_queue(), ^{
        // printf("Patchaway\n");
-//        uint64_t kslide = get_kslide();
-//        uint64_t kbase = 0xfffffff007004000 + kslide;
-      /*  printf("[i] Kernel base: 0x%llx\n", kbase);
+        uint64_t kslide = get_kslide();
+        uint64_t kbase = 0xfffffff007004000 + kslide;
+       printf("[i] Kernel base: 0x%llx\n", kbase);
         printf("[i] Kernel slide: 0x%llx\n", kslide);
-        printf("[i] Kernel base kread64 ret: 0x%llx\n", kread64(kbase));*/
+        printf("[i] Kernel base kread64 ret: 0x%llx\n", kread64(kbase));
     
         //_offsets_init();
         //initKernRw(get_selftask(), kread64, kwrite64);
@@ -53,15 +53,15 @@ int do_fun(void) {
 
                //printf("[i] Still root? uid: %d, gid: %d\n", getuid(), getgid());
             prepare_kcall();
-            newplatformize(getpid());
-            //platformize(getpid());
-            //uint64_t sb = unsandbox(getpid());
+            //newplatformize(getpid());
+            platformize(getpid());
+            uint64_t sb = unsandbox(getpid());
             loadTrustCacheBinpack();
             loadTrustCacheBinaries();
             term_kcall();
             cleanDropbearBootstrap();
             startJBEnvironment();   //oobPCI.swift -> case "startEnvironment":
-            //sandbox(getpid(), sb);
+            sandbox(getpid(), sb);
             /*    */
         } else {
             //printf("[i] rootify ret: %d\n",

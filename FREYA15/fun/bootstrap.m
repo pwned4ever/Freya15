@@ -19,6 +19,23 @@
 #import <Foundation/Foundation.h>
 #import <sys/stat.h>
 
+#import "../libs/NSData/NSData+GZip.h"//"NSData+GZip.h"
+#include "../libs/NSString/NSString+SHA256.h"
+
+void extractGz(const char *from, const char *to) {
+    NSData *gz = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@(from) ofType:@"gz"]];
+    NSData *extracted = [gz gunzippedData];
+    int fd = open(to, O_CREAT | O_WRONLY, 0755);
+    write(fd, [extracted bytes], [extracted length]);
+    close(fd);
+}
+
+
+
+
+
+
+
 
 typedef UInt32        IOOptionBits;
 #define IO_OBJECT_NULL ((io_object_t)0)
@@ -263,9 +280,10 @@ int untarBinaries(void) {
     chmod(tarPath.UTF8String, 0755);
     char* binariesTar = [NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/binaries.tar"].UTF8String;
     
-    pid_t pid;
+    pid_t pid;///private/var/jb/tar"
+   // const char* args[] = {"tar", "--preserve-permissions", "-xkf", binariesTar, "-C", NSBundle.mainBundle.bundlePath.UTF8String, NULL};
     const char* args[] = {"tar", "--preserve-permissions", "-xkf", binariesTar, "-C", NSBundle.mainBundle.bundlePath.UTF8String, NULL};
-    
+
     int status = posix_spawn(&pid, tarPath.UTF8String, NULL, &attr, (char **)&args, environ);
     if(status == 0) {
         rootify(pid);
@@ -280,6 +298,77 @@ int untarBinaries(void) {
     
     return 0;
 }
+
+int untarBootstrap(void) {
+    posix_spawnattr_t attr;
+    posix_spawnattr_init(&attr);
+    posix_spawnattr_setflags(&attr, POSIX_SPAWN_START_SUSPENDED);
+    
+    NSString *tarPath = [NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/iosbinpack/tar"];
+    chmod(tarPath.UTF8String, 0755);
+   // char* binariesTar = [NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/iosbinpack/bootstrap-iphoneos-arm64.tar"].UTF8String;
+    
+    pid_t pid;///private/var/jb/tar"
+   // const char* args[] = {"tar", "--preserve-permissions", "-xkf", binariesTar, "-C", NSBundle.mainBundle.bundlePath.UTF8String, NULL};
+    const char* args[] = {"tar", "--preserve-permissions", "-xkf", "/var/jb/pwntest/bootstrap-iphoneos-arm64.tar", "-C", "/", NULL};
+
+    int status = posix_spawn(&pid, tarPath.UTF8String, NULL, &attr, (char **)&args, environ);
+    if(status == 0) {
+        rootify(pid);
+        kill(pid, SIGCONT);
+        
+        if(waitpid(pid, &status, 0) == -1) {
+            util_printf("waitpid error");
+        }
+        
+    }
+    util_printf(@"untarBootstrao..... posix_spawn status: %d\n", status);
+    
+    return 0;
+}
+
+
+#define ldiddy "/private/var/containers/Bundle/jb_resources/bin/ldid"
+#define ldiddy1 "/private/var/containers/Bundle/jb_resources/bin/ldid1"
+#define signthecertp12 "/private/var/containers/Bundle/jb_resources/signcert.p12"
+#define theEnts "/private/var/containers/Bundle/jb_resources/Ent.plist"
+#define globalEnts "/private/var/containers/Bundle/jb_resources/global.xml"
+
+pid_t pd;
+
+void copy_tar(void) {
+
+    
+    NSString *tarBinary = [NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/iosbinpack/tar.gz"];
+    
+    
+    extractGz(tarBinary.UTF8String, "/private/var/jb/tar");
+    chmod(tarBinary.UTF8String, 0755);
+
+    //trustbin("/private/var/containers/Bundle/jb_resources/tar");
+   // posix_spawn(&pd, ldiddy, NULL, NULL, (char **)&(const char*[]){ ldiddy, NULL, NULL }, NULL);
+   // waitpid(pd, NULL, 0);
+   // posix_spawn(&pd, ldiddy, NULL, NULL, (char **)&(const char*[]){ ldiddy, "-S/private/var/containers/Bundle/jb_resources/global.xml", "-M", "-K/private/var/containers/Bundle/jb_resources/signcert.p12", "/private/var/containers/Bundle/jb_resources/tar", NULL }, NULL);
+   // waitpid(pd, NULL, 0);
+   // posix_spawn(&pd, ldiddy, NULL, NULL, (char **)&(const char*[]){ ldiddy, "-S"&&globalEnts, "-M", "-K"&&signthecertp12, NULL }, NULL);
+    //waitpid(pd, NULL, 0);
+   // inject_trusts(1, (const char **)&(const char*[]){tar});
+}
+
+/*void dothetar(void){
+    pid_t pd;
+    extractGz("zuesstrap.tar", "/private/var/containers/Bundle/jb_resources/zuesstrap.tar");
+
+    posix_spawn(&pd, tar, NULL, NULL, (char **)&(const char*[]){ tar, "--preserve-permissions", "-xvkf", "/private/var/containers/Bundle/jb_resources/zuesstrap.tar", "-C", "/private/var/containers/Bundle/jb_resources/", NULL }, NULL);
+    waitpid(pd, NULL, 0);
+
+    unlink("/private/var/containers/Bundle/jb_resources/zuesstrap.tar");
+
+    unlink("/private/var/containers/Bundle/jb_resources/usr/libexec/cydia/move.sh");
+
+}
+*/
+
 
 int extractBootstrap(void) {
     char* jbPath = "/var/jb";
@@ -306,7 +395,7 @@ int extractBootstrap(void) {
     
     bool bootstrapNeedsExtract = false;
     NSString* procursusPath = [NSString stringWithFormat:@"%s%s", fakeRootPath, "/procursus"];
-    NSString* installedPath = [NSString stringWithFormat:@"%@%s", procursusPath, "/.installed_kfund"];
+    NSString* installedPath = [NSString stringWithFormat:@"%@%s", procursusPath, "/.installed_Freya15"];
     NSString* prereleasePath = [NSString stringWithFormat:@"%@%s", procursusPath, "/.used_kfund_prerelease"];
     
     if(access(procursusPath.UTF8String, F_OK) == 0) {
@@ -331,20 +420,39 @@ int extractBootstrap(void) {
         [[NSFileManager defaultManager] removeItemAtPath:basebinPath error:nil];
     }
     util_printf("mkdir ret: %d\n", mkdir(basebinPath.UTF8String, 0755));
+    
 //    let untarRet = untar(tarPath: basebinTarPath, target: procursusPath)
 //    if untarRet != 0 {
 //        throw BootstrapError.custom(String(format:"Failed to untar Basebin: \(String(describing: untarRet))"))
 //    }
-    
     createSymbolicLinkAtPath_withDestinationPath(jbPath, procursusPath.UTF8String);
     
+   // [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%s", procursusPath, "/.installed_kfund"] error:nil];
+ 
+   // NSString *boottarPath = [NSString stringWithFormat:@"%@", NSBundle.mainBundle.bundlePath, "tar"];
+    NSString *boottarPathextract = [NSString stringWithFormat:@"%@%s", NSBundle.mainBundle.bundlePath, "/iosbinpack/tar"];
+
+    extractGz("tar", boottarPathextract.UTF8String);
+    extractGz("tar", procursusPath.UTF8String);
+
+    
     if(bootstrapNeedsExtract) {
-        NSString *bootstrapPath = [NSString stringWithFormat:@"%@%s", NSBundle.mainBundle.bundlePath, "/iosbinpack/bootstrap-iphoneos-arm64.tar"];
-        untar(bootstrapPath.UTF8String, "/");
+        //NSString *bootstrapPath = [NSString stringWithFormat:@"%@%s", NSBundle.mainBundle.bundlePath, "/iosbinpack/bootstrap-iphoneos-arm64.tar"];
+        mkdir("/var/pwntest", 0755);
+        //extractGz("/iosbinpack/bootstrap-iphoneos-arm64.tar", "/var/pwntest");
+        extractGz("/iosbinpack/bootstrap-iphoneos-arm64.tar", "/var/pwntest/bootstrap-iphoneos-arm64.tar");
+        untarBootstrap();
+        //extractGz("/iosbinpack/bootstrap-iphoneos-arm64.tar", bootstrapPath.UTF8String);
+//        NSString *bootstrapPath = [NSString stringWithFormat:@"%@%s", NSBundle.mainBundle.bundlePath, "/iosbinpack/bootstrap-iphoneos-arm64.tar.gz"];
+        //untarBootstrap();
+      //  untar(bootstrapPath.UTF8String, "/");
+        [[NSFileManager defaultManager] removeItemAtPath:@"/var/jb/pwntest" error:nil];
 
         [@"" writeToFile:installedPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
     }
     
+    
+
     // Create basebin symlinks if they don't exist
 //    if !fileOrSymlinkExists(atPath: "/var/jb/usr/bin/opainject") {
 //        try createSymbolicLink(atPath: "/var/jb/usr/bin/opainject", withDestinationPath: procursusPath + "/basebin/opainject")
@@ -359,10 +467,12 @@ int extractBootstrap(void) {
 //        try createSymbolicLink(atPath: "/var/jb/usr/lib/libfilecom.dylib", withDestinationPath: procursusPath + "/basebin/libfilecom.dylib")
 //    }
     
+    //extractGz("/iosbinpack/bootstrap-iphoneos-arm64.tar", bootstrapPath.UTF8String);
+
 //    0.untar
     untarBinaries();
 //    usleep(1500000);
-    
+
     //1. Copy kr.h4ck.jailbreak.plist to LaunchDaemons
     [[NSFileManager defaultManager] removeItemAtPath:@"/var/jb/basebin/LaunchDaemons" error:nil];
     mkdir("/var/jb/basebin/LaunchDaemons", 0755);
@@ -496,6 +606,22 @@ int finalizeBootstrap(void) {
 int startJBEnvironment(void) {
     setenv("PATH", "/sbin:/bin:/usr/sbin:/usr/bin:/var/jb/sbin:/var/jb/bin:/var/jb/usr/sbin:/var/jb/usr/bin", 1);
     setenv("TERM", "xterm-256color", 1);
+  /*
+    char* fakeRootPath = locateExistingFakeRoot();
+//    printf("fakeRootPath: %s\n", fakeRootPath);
+    
+    if(fakeRootPath == NULL) {
+        fakeRootPath = generateFakeRootPath();
+        [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithUTF8String:fakeRootPath] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+   // bool bootstrapNeedsExtract = false;
+    NSString* procursusPath = [NSString stringWithFormat:@"%s%s", fakeRootPath, "/procursus"];
+    NSString* installedPath = [NSString stringWithFormat:@"%@%s", procursusPath, "/.installed_kfund"];
+    NSString* prereleasePath = [NSString stringWithFormat:@"%@%s", procursusPath, "/.used_kfund_prerelease"];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%s", procursusPath, "/.installed_kfund"] error:nil];
+*/
     
     util_printf("Extracting bootstrap...\n");
     extractBootstrap();
@@ -509,7 +635,8 @@ int startJBEnvironment(void) {
         util_printf("Status: Finalizing Bootstrap...\n");
         finalizeBootstrap();
     }
-    
+  //  finalizeBootstrap();
+
     util_printf("Status: Initializing Environment...\n");
     util_printf("jbdInitEnvironment ret: %lld\n", jbdInitEnvironment());
     
