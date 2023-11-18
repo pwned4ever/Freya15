@@ -309,8 +309,8 @@ int untarBootstrap(void) {
    // char* binariesTar = [NSString stringWithFormat:@"%@%@", NSBundle.mainBundle.bundlePath, @"/iosbinpack/bootstrap-iphoneos-arm64.tar"].UTF8String;
     
     pid_t pid;///private/var/jb/tar"
-   // const char* args[] = {"tar", "--preserve-permissions", "-xkf", binariesTar, "-C", NSBundle.mainBundle.bundlePath.UTF8String, NULL};
-    const char* args[] = {"tar", "--preserve-permissions", "-xkf", "/var/jb/pwntest/bootstrap-iphoneos-arm64.tar", "-C", "/", NULL};
+   // const char* args[] = {"tar", "--preserve-permissions", "-xkf", binariesTar, "-C", NSBundle.mainBundle.bundlePath.UTF8String, NULL};       ////  var/pwntest/bootstrap-iphoneos-arm64.tar
+    const char* args[] = {"tar", "--preserve-permissions", "-xkf", "/var/pwntest/bootstrap-iphoneos-arm64.tar", "-C", "/", NULL};
 
     int status = posix_spawn(&pid, tarPath.UTF8String, NULL, &attr, (char **)&args, environ);
     if(status == 0) {
