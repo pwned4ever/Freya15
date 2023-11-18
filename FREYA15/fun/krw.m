@@ -449,7 +449,7 @@ uint64_t gogroo(uint64_t proc_addr)
 //    kcall2(proc_set_ucred_func, proc_addr, kern_ucred, 0, 0, 0, 0, 0);
     setuid(0);
     setuid(0);
-    printf("getuid: %d\n", getuid());
+   // util_printf("getuid: %d\n", getuid());
     return old_OG_proc_ucred;
 }
 
