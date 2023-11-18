@@ -484,8 +484,27 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF007295390;
             off_zm_fix_addr_kalloc = 0xFFFFFFF00713E598;
             
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
+            // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+            off_kalloc_data_external = 0xFFFFFFF007188AE8;
+            off_kfree_data_external = 0xFFFFFFF007189254;
+            
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C2ADF0;
+            off_empty_kdata_page = 0xFFFFFFF0077D8000 + 0x100;//done
+            off_trustcache = 0xFFFFFFF0078718C0;
+            off_gphysbase = 0xFFFFFFF0070CBA30;
+            off_gphyssize = 0xFFFFFFF0070CBA48;
 
+            off_pmap_enter_options_addr = 0xFFFFFFF00727DDE8;
+            
+            off_allproc = 0xFFFFFFF00784C100;
+            off_pmap_find_phys = 0xFFFFFFF007284B58;
+            off_ml_phys_read_data = 0xFFFFFFF00729510C;
+            off_ml_phys_write_data = 0xFFFFFFF007295390;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF0071024B8;
+
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
+            
            // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
         } else {
            // printf("[-] No matching offsets.\n");
@@ -527,7 +546,7 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF007CBE5AC;
             off_zm_fix_addr_kalloc = 0xFFFFFFF0077EE718;
         } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.2") || SYSTEM_VERSION_EQUAL_TO(@"15.0.1")) {
-            util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String); //19A404
+            //util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String); //19A404
             off_kalloc_data_external =  0xFFFFFFF007B95664;
             off_kfree_data_external =   0xFFFFFFF007B95984;
             off_add_x0_x0_0x40_ret = 0xFFFFFFF008269688;//0xFFFFFFF0083B7848; FFFFFFF0083B7324 , FFFFFFF0083B73A8 , FFFFFFF0083B7358

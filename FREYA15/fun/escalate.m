@@ -22,18 +22,21 @@
 extern char **environ;
 
 uint64_t borrow_entitlements(pid_t to_pid, pid_t from_pid) {
+    
     uint64_t to_proc = proc_of_pid(to_pid);
     uint64_t from_proc = proc_of_pid(from_pid);
     
-    uint64_t to_ucred = kread64(to_proc + off_p_ucred);
-    uint64_t from_ucred = kread64(from_proc + off_p_ucred);
+    uint64_t to_ro_proc = kread64(to_proc + off_p_ro);
+    uint64_t to_cr_label = kread64(to_ro_proc + off_u_cr_label);
     
-    uint64_t to_cr_label = kread64(to_ucred + off_u_cr_label);
-    uint64_t from_cr_label = kread64(from_ucred + off_u_cr_label);
-    
+    uint64_t from_ro = kread64(from_proc + off_p_ro);
+    uint64_t from_cr_label = kread64(from_ro + off_u_cr_label);
+
     uint64_t to_amfi = kread64(to_cr_label + off_amfi_slot);
     uint64_t from_amfi = kread64(from_cr_label + off_amfi_slot);
     
+   // kcallKRW(proc_set_ucred_func, proc_addr, LDproc_ucred, 0, 0, 0, 0, 0);
+
     kwrite64(to_cr_label + off_amfi_slot, from_amfi);
     
     return to_amfi;
@@ -251,13 +254,10 @@ void newplatformize(pid_t pid){
     uint64_t pro_ = kread64(proc + 0x20);
     uint32_t ro_flags = kread32(pro_ + 0x1c);//PROC_RO_CSFLAGS(PROC_RO(proc)) | CS_PLATFORM_BINARY;
     //printf("  ro_flags = 0x%x\n", ro_flags);//905969668
-
-    uint32_t v = (uint32_t)(flags);
-    PROC_RO_CSFLAGS_SET(ro_flags, flags);
-
     uint32_t flagscheck = kread32(pro_ + 0x1c);//838868996
    // printf("flagscheck = 0x%x\n", flagscheck);//905969668
-    kwrite32(pro_ + 0x1CULL, &v);
+    //kwrite32(ro_flags, flags);//    kcallKRW(proc_set_ucred_func, proc_addr, kern_ucred, 0, 0, 0, 0, 0);
+   // kcallKRW(proc_set_ucred_func, pro_ + 0x1c, flags, 0, 0, 0, 0, 0);
     flagscheck = kread32(pro_ + 0x1c);//838868996
    // printf("flagscheck = 0x%x\n", flagscheck);//905969668
     //kwrite32(proc_ro + 0x1C, flags);

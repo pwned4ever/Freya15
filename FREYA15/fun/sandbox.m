@@ -158,3 +158,4 @@ void unsandbox_rootless(char* extensions) {
     extensionToken = strtok(NULL, "|");
   }
 }
+

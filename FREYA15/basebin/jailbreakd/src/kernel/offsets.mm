@@ -346,6 +346,27 @@ void _offsets_init(void) {
         }
     } else if ([device  isEqual: @"iPhone 7 Plus"]) {
         
+        if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
+            off_kalloc_data_external = 0xFFFFFFF007188AE8;
+            off_kfree_data_external = 0xFFFFFFF007189254;
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C2ADF0;
+            off_empty_kdata_page = 0xFFFFFFF0077D8000 + 0x100;//done
+            off_trustcache = 0xFFFFFFF0078718C0;
+            off_gphysbase = 0xFFFFFFF0070CBA30;
+            off_gphyssize = 0xFFFFFFF0070CBA48;
+            off_pmap_enter_options_addr = 0xFFFFFFF00727DDE8;
+            off_allproc = 0xFFFFFFF00784C100;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF0071024B8;
+
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.2")) {
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.1")) {
+        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
+
+        } else {
+            NSLog(@"[jailbreakd] No matching offsets.\n");
+            exit(EXIT_FAILURE);
+        }
+
     } else if ([device  isEqual: @"iPhone 8"]) {
         if (SYSTEM_VERSION_EQUAL_TO(@"15.2")) {
            off_kalloc_data_external = 0xFFFFFFF0071CA924;

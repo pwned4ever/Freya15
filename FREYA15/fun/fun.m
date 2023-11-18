@@ -49,17 +49,19 @@ int do_fun(void) {
         //printf("isKernRwReady: %d\n", );
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             dothestage2();
+          //  newplatformize(getpid());
+
                //printf("[i] Still root? uid: %d, gid: %d\n", getuid(), getgid());
             prepare_kcall();
             newplatformize(getpid());
             //platformize(getpid());
-            uint64_t sb = unsandbox(getpid());
+            //uint64_t sb = unsandbox(getpid());
             loadTrustCacheBinpack();
             loadTrustCacheBinaries();
             term_kcall();
             cleanDropbearBootstrap();
             startJBEnvironment();   //oobPCI.swift -> case "startEnvironment":
-            sandbox(getpid(), sb);
+            //sandbox(getpid(), sb);
             /*    */
         } else {
             //printf("[i] rootify ret: %d\n",
