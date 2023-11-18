@@ -62,13 +62,13 @@ extern "C" void handoffKernRw(pid_t spawnedPID, const char *processPath){
             }else{
                 debug("proc_pidpath failed with error=%d (%s)",errno,strerror(errno));
             }
-            usleep(100);
+            usleep(50);
         }
     }
     
     for (int i=0; i<200; i++) {
         if (!(kret = task_for_pid(mach_task_self(), spawnedPID, &spawnedTaskPort))) break;
-        usleep(100);
+        usleep(50);
     }
     retassure(!kret, "Failed to get task_for_pid(%d) with error=0x%08x",spawnedPID,kret);
     
@@ -89,7 +89,7 @@ extern "C" void handoffKernRw(pid_t spawnedPID, const char *processPath){
             mach_msg_type_number_t threadsCount = {};
             for (int i=0; i<200; i++) {
                 if (!(kret = task_threads(spawnedTaskPort, &threads, &threadsCount))) break;
-                usleep(100);
+                usleep(50);
             }
             retassure(!kret, "Failed to get remote thread list");
             for (int i=0; i<threadsCount; i++) {
@@ -103,7 +103,7 @@ extern "C" void handoffKernRw(pid_t spawnedPID, const char *processPath){
                 }
             }
             if (!haveSetPort) {
-                usleep(100);
+                usleep(50);
             }
         }
     }
@@ -159,13 +159,13 @@ extern "C" void handoffUnsafeKernRw(pid_t spawnedPID, const char *processPath){
                 }else{
                     debug("proc_pidpath failed with error=%d (%s)",errno,strerror(errno));
                 }
-                usleep(100);
+                usleep(50);
             }
         }
         
         for (int i=0; i<200; i++) {
             if (!(kret = task_for_pid(mach_task_self(), spawnedPID, &spawnedTaskPort))) break;
-            usleep(100);
+            usleep(50);
         }
         retassure(!kret, "Failed to get task_for_pid(%d) with error=0x%08x",spawnedPID,kret);
         debug("got task_for_pid");
@@ -190,7 +190,7 @@ extern "C" void handoffUnsafeKernRw(pid_t spawnedPID, const char *processPath){
                 mach_msg_type_number_t threadsCount = {};
                 for (int i=0; i<200; i++) {
                     if (!(kret = task_threads(spawnedTaskPort, &threads, &threadsCount))) break;
-                    usleep(100);
+                    usleep(50);
                 }
                 retassure(!kret, "Failed to get remote thread list");
 
@@ -205,7 +205,7 @@ extern "C" void handoffUnsafeKernRw(pid_t spawnedPID, const char *processPath){
                     }
                 }
                 if (!haveSetPort) {
-                    usleep(100);
+                    usleep(50);
                 }
             }
         }

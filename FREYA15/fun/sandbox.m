@@ -67,7 +67,7 @@
 #define MAKE_KPTR(v) (v | 0xffffff8000000000)
 
 uint64_t unsandbox(pid_t pid) {
-    printf("[*] Unsandboxing pid %d\n", pid);
+    //printf("[*] Unsandboxing pid %d\n", pid);
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
 //18446744017486185808
         uint64_t proc = proc_of_pid(pid); // pid's proccess structure on the kernel

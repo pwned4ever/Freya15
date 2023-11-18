@@ -122,7 +122,7 @@ void xpc_crasher(char* service_name) {
       printf("smashing XPC send failed: %s", mach_error_string(err));
     return;
   } else {
-      printf("smashed XPC");
+   //   printf("smashed XPC");
   }
 
   mach_port_deallocate(mach_task_self(), so0);

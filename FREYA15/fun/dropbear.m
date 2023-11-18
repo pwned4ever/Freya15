@@ -50,7 +50,7 @@ int untarDropbearBootstrap(void) {
         kill(pid, SIGCONT);
         
         if(waitpid(pid, &status, 0) == -1) {
-            printf("waitpid error\n");
+          //  printf("waitpid error\n");
         }
         
     }

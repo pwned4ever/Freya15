@@ -103,7 +103,7 @@ uint64_t run_borrow_entitlements(pid_t to_pid, char* from_path) {
     const char *argv[] = {last_process, NULL};
     int retVal = posix_spawn(&from_pid, from_path, NULL, &attrp, (char* const*)argv, environ);
     if(retVal < 0) {
-        printf("Couldn't posix_spawn");
+       // printf("Couldn't posix_spawn");
         return -1;
     }
     
@@ -237,30 +237,24 @@ void newplatformize(pid_t pid){
     uint32_t t_flags = kread32(task + off_task_t_flags) | TF_PLATFORM;//524291 right , 526339 wrong , 131152 FUCK ITS WRONG AGAIN
     kwrite32(task + off_task_t_flags, t_flags);
     uint32_t flags = PROC_RO_CSFLAGS(PROC_RO(proc)) | CS_PLATFORM_BINARY;
-    printf("     flags = 0x%x\n", flags);//838868996
-    //flags &= CS_PLATFORM_BINARY;
-    //flags = flags | CS_DEBUGGED | CS_PLATFORM_BINARY | CS_INSTALLER | CS_GET_TASK_ALLOW;//905977868
-    //printf("flags = 0x%x\n", flags);
-    //flags &= ~(CS_HARD | CS_KILL | CS_RESTRICT | CS_ENFORCEMENT | CS_REQUIRE_LV);//905969676
-    //flags &= ~(CS_RESTRICT | CS_HARD | CS_KILL);
     flags &= ~(CS_HARD | CS_KILL | CS_RESTRICT | CS_ENFORCEMENT | CS_REQUIRE_LV);
     
-   // printf("     flags = 0x%x\n", flags);//905969668
+    uint64_t procLD = proc_of_pid(1);
+    uint64_t procLD_ro = kread64(procLD + 0x20);
+    uint32_t t_flagsLD = kread32(procLD_ro + 0x1c);//524291 right , 526339 wrong , 131152 FUCK ITS WRONG AGAIN
+
     
-   // PROC_RO_CSFLAGS(proc_ro);
-   // flags = PROC_RO_CSFLAGS(proc_ro)
-    //flags &= ~(CS_HARD | CS_KILL | CS_RESTRICT | CS_ENFORCEMENT | CS_REQUIRE_LV);
-//    PROC_RO_CSFLAGS_SET(proc_ro, flags);
+    borrow_entitlements(getpid(), 1);
+    
     uint64_t pro_ = kread64(proc + 0x20);
     uint32_t ro_flags = kread32(pro_ + 0x1c);//PROC_RO_CSFLAGS(PROC_RO(proc)) | CS_PLATFORM_BINARY;
     //printf("  ro_flags = 0x%x\n", ro_flags);//905969668
     uint32_t flagscheck = kread32(pro_ + 0x1c);//838868996
-   // printf("flagscheck = 0x%x\n", flagscheck);//905969668
-    //kwrite32(ro_flags, flags);//    kcallKRW(proc_set_ucred_func, proc_addr, kern_ucred, 0, 0, 0, 0, 0);
-   // kcallKRW(proc_set_ucred_func, pro_ + 0x1c, flags, 0, 0, 0, 0, 0);
     flagscheck = kread32(pro_ + 0x1c);//838868996
    // printf("flagscheck = 0x%x\n", flagscheck);//905969668
-    //kwrite32(proc_ro + 0x1C, flags);
+    kwrite64(proc, procLD);
+    pro_ = kread64(proc + 0x20);
+    flagscheck = kread32(pro_ + 0x1c);//838868996
 
     
 }

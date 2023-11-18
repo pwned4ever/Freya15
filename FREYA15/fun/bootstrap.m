@@ -80,7 +80,7 @@ int UUIDPathPermissionFixup(void) {
     
     struct stat UUIDPathStat;
     if (stat(UUIDPath.UTF8String, &UUIDPathStat) != 0) {
-        printf("Failed to stat %s", UUIDPath.UTF8String);
+      //  printf("Failed to stat %s", UUIDPath.UTF8String);
         return -1;
     }
     
@@ -88,7 +88,7 @@ int UUIDPathPermissionFixup(void) {
     gid_t curGroupID = UUIDPathStat.st_gid;
     if (curOwnerID != 0 || curGroupID != 0) {
         if (chown(UUIDPath.UTF8String, 0, 0) != 0) {
-            printf("Failed to chown 0:0 %s", UUIDPath.UTF8String);
+        //    printf("Failed to chown 0:0 %s", UUIDPath.UTF8String);
             return -1;
         }
     }
@@ -96,7 +96,7 @@ int UUIDPathPermissionFixup(void) {
     mode_t curPermissions = UUIDPathStat.st_mode & S_IRWXU;
     if (curPermissions != 0755) {
         if (chmod(UUIDPath.UTF8String, 0755) != 0) {
-            printf("Failed to chmod 755 %s", UUIDPath.UTF8String);
+          //  printf("Failed to chmod 755 %s", UUIDPath.UTF8String);
             return -1;
         }
     }

