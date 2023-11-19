@@ -51,6 +51,6 @@ extern uint64_t off_gphyssize;
 extern uint64_t off_pmap_enter_options_addr;
 extern uint64_t off_allproc;
 extern uint64_t off_zm_fix_addr_kalloc;
-
+extern uint32_t off_p_ro;
 void _offsets_init(void);
 
