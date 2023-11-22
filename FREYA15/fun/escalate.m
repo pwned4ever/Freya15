@@ -414,54 +414,9 @@ int mixnproc_cs(kptr32_t proc_ro_cs_2get, kptr32_t cSsflags) {
 void set_proc_csflags(pid_t pid) {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
        // printf("getuid: %d\n", getuid());
-        //uint64_t result = gettnproc_ro(gettnproc(pid));
-        //mixnproc_cs(result, gettnproc_cs(result));
-            uint64_t proc = proc_of_pid(pid);//18446744025145012176
-
-        uint64_t proc_ro = kread64(proc + off_p_ro);//PROC_RO(proc);
-        printf("proc_ro = 0x%llx\n", proc_ro);
-        uint32_t flags = kread32(proc_ro + off_p_csflags);
-       // printf("flags_ro = 0x%llx\n", flags_ro);//838868996
-        printf("flags = 0x%x\n", flags);//838868996
-
-        uint64_t task = kread64(proc + off_p_task);
-        uint32_t t_flags = kread32(task + off_task_t_flags);//524291 right , 526339 wrong , 131152 FUCK ITS WRONG AGAIN
-
-        printf("t_flags = 0x%x\n", t_flags);//838868996
-
-        
-            uint32_t task_flags = kread32(kread64(proc + 0x10) + 0x3b8);
-            printf("task->t_flags: %02X\n", task_flags);
-            
-            kwrite32(kread64(proc + 0x10) + 0x3b8, task_flags | 0x400);
-        
-        
-        
-            uint32_t csflags = kread32(proc + 0xC0);
-        //
-            printf("proc->cs_flags: %02X\n", csflags);
-        //
-            csflags = (csflags | CS_PLATFORM_BINARY | CS_INSTALLER | CS_GET_TASK_ALLOW | CS_DEBUGGED) & ~(CS_RESTRICT | CS_HARD | CS_KILL);
-        //
-            printf("proc->cs_flags: %02X\n", csflags);
-        //
-            kwrite32(proc + 0xC0, csflags);
-        
-        
-        
-        proc_ro = kread64(proc + off_p_ro);//PROC_RO(proc);
-        printf("proc_ro = 0x%llx\n", proc_ro);
-        flags = kread32(proc_ro + off_p_csflags);
-       // printf("flags_ro = 0x%llx\n", flags_ro);//838868996
-        printf("flags = 0x%x\n", flags);//838868996
-        t_flags = kread32(task + off_task_t_flags);//524291 right , 526339 wrong , 131152 FUCK ITS WRONG AGAIN
-
-        printf("t_flags = 0x%x\n", t_flags);//838868996
-        task_flags = kread32(kread64(proc + 0x10) + 0x3b8);
-        printf("task_flags = 0x%x\n", task_flags);//838868996
-        
-        
-        
+        uint64_t result = gettnproc_ro(gettnproc(pid));
+        mixnproc_cs(result, gettnproc_cs(result));
+                  
         /*uint64_t proc = proc_of_pid(pid);//18446744025145012176
         uint64_t proc_ro = kread64(proc + off_p_ro);//PROC_RO(proc);
         //printf("proc_ro = 0x%llx\n", proc_ro);
@@ -497,13 +452,7 @@ void set_proc_csflags(pid_t pid) {
        // printf("csflags = 0x%x\n", csflags);
 
         kwrite32(proc + off_p_csflags, csflags);
-/*
- uint32_t task_flags = _kread32(kfd, _kread64(kfd, proc + 0x10) + 0x3E8);
-     printf("task->t_flags: %02X\n", task_flags);
-     
-     _kwrite32(kfd, _kread64(kfd, proc + 0x10) + 0x3E8, task_flags | 0x400);
- 
- */
+
     }
     
 }
@@ -520,41 +469,12 @@ uint64_t get_cs_blob(pid_t pid) {
 
 
 
-/*void set_csflags(uint64_t kfd, uint64_t proc) {
-//    uint32_t csflags = _kread32(kfd, proc + 0xC0);
-//
-//    printf("proc->cs_flags: %02X\n", csflags);
-//
-//    csflags = (csflags | CS_PLATFORM_BINARY | CS_INSTALLER | CS_GET_TASK_ALLOW | CS_DEBUGGED) & ~(CS_RESTRICT | CS_HARD | CS_KILL);
-//
-//    printf("proc->cs_flags: %02X\n", csflags);
-//
-//    _kwrite32(kfd, proc + 0xC0, csflags);
-//
-    if (@available(iOS 15.2, *)) {
-        uint32_t task_flags = _kread32(kfd, _kread64(kfd, proc + 0x10) + 0x3b8);
-        printf("task->t_flags: %02X\n", task_flags);
-        
-        _kwrite32(kfd, _kread64(kfd, proc + 0x10) + 0x3b8, task_flags | 0x400);
-    } else {
-        uint32_t task_flags = _kread32(kfd, _kread64(kfd, proc + 0x10) + 0x3E8);
-        printf("task->t_flags: %02X\n", task_flags);
-        
-        _kwrite32(kfd, _kread64(kfd, proc + 0x10) + 0x3E8, task_flags | 0x400);
-    }
-    return;
-}
 
-*/
 
 void set_csb_platform_binary(pid_t pid) {
     
     uint64_t cs_blob = get_cs_blob(pid);
-    
-    
-    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
-        //kwrite32(cs_blob + off_cs_blob_csb_platform_binary, 1);
         borrow_entitlements(pid, 1);
     } else {
         kwrite32(cs_blob + off_cs_blob_csb_platform_binary, 1);
@@ -566,18 +486,11 @@ void platformize(pid_t pid) {
         borrow_entitlements(pid, 1);
     } else {
        */
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
-        
+    
         set_task_platform(pid, true);
         set_proc_csflags(pid);
         set_csb_platform_binary(pid);
-    } else {
-        set_task_platform(pid, true);
-        set_proc_csflags(pid);
-        set_csb_platform_binary(pid);
-
-    }
-        //}
+    //}
 }
 #define PROC_TASK(proc)  kread64((proc) + 0x10ULL)
 #define PROC_RO(proc)    kread64((proc) + 0x20ULL)

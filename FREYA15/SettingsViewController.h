@@ -7,7 +7,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SettingsViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UILabel *freyasversoinlbl;
+@property (strong, nonatomic) IBOutlet UISwitch *TweaksEnabled;
+@property (strong, nonatomic) IBOutlet UISwitch *fixfs;
+@property (strong, nonatomic) IBOutlet UILabel *loadtweaklbl;
+@property (strong, nonatomic) IBOutlet UILabel *fixfslbl;
 
+@property (strong, nonatomic) IBOutlet UIView *freyasbackgroundview;
+@property (strong, nonatomic) IBOutlet UIButton *creditsbtn;
+@property (strong, nonatomic) IBOutlet UILabel *restorefslbl;
+@property (strong, nonatomic) IBOutlet UISwitch *restoreFS;
+@property (strong, nonatomic) IBOutlet UIButton *EX_output_kfdPhys;
+@property (strong, nonatomic) IBOutlet UIButton *EX_output_kfdSmith;
+@property (strong, nonatomic) IBOutlet UIButton *EX_output_multibyte;
 
 //-------UI STUFF--------//
 /*

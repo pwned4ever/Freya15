@@ -109,7 +109,7 @@ BOOL sandbox(pid_t pid, uint64_t sb) {
         kwrite64(cr_label + off_sandbox_slot /* First slot is AMFI's. so, this is second? */, sb);
         return (kread64(kread64(ucred + off_u_cr_label) + off_sandbox_slot) == sb) ? YES : NO;
     } else {
-        printf("[*] Sandboxing pid %d with slot at 0x%llx\n", pid, sb);
+       // printf("[*] Sandboxing pid %d with slot at 0x%llx\n", pid, sb);
         uint64_t proc = proc_of_pid(pid); // pid's proccess structure on the kernel
         uint64_t ucred = kread64(proc + off_p_ucred); // pid credentials
         uint64_t cr_label = kread64(ucred + off_u_cr_label); /* MAC label */

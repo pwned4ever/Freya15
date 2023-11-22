@@ -39,11 +39,11 @@ void krkw_helper_grab_free_pages(struct kfd* kfd);
 void krkw_helper_run_allocate(struct kfd* kfd, struct krkw* krkw);
 void krkw_helper_run_deallocate(struct kfd* kfd, struct krkw* krkw);
 void krkw_helper_free(struct kfd* kfd, struct krkw* krkw);
+//        print_string(method_name);                                      \
 
 #define kread_method_case(method)                                       \
     case method: {                                                      \
         const char* method_name = #method;                              \
-        print_string(method_name);                                      \
         kfd->kread.krkw_method_ops.init = method##_init;                \
         kfd->kread.krkw_method_ops.allocate = method##_allocate;        \
         kfd->kread.krkw_method_ops.search = method##_search;            \
@@ -55,10 +55,11 @@ void krkw_helper_free(struct kfd* kfd, struct krkw* krkw);
         break;                                                          \
     }
 
+//        print_string(method_name);                                      \
+
 #define kwrite_method_case(method)                                       \
     case method: {                                                       \
         const char* method_name = #method;                               \
-        print_string(method_name);                                      \
         kfd->kwrite.krkw_method_ops.init = method##_init;                \
         kfd->kwrite.krkw_method_ops.allocate = method##_allocate;        \
         kfd->kwrite.krkw_method_ops.search = method##_search;            \

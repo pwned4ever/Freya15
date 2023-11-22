@@ -53,7 +53,7 @@ struct pmap {
 
 void print_pmap(struct kfd* kfd, struct pmap* pmap, u64 pmap_kaddr)
 {
-    print_message("struct pmap @ %016llx", pmap_kaddr);
+ /*   print_message("struct pmap @ %016llx", pmap_kaddr);
     print_x64(pmap->tte);
     print_x64(pmap->ttep);
     print_x64(pmap->min);
@@ -95,7 +95,8 @@ void print_pmap(struct kfd* kfd, struct pmap* pmap, u64 pmap_kaddr)
     print_bool(pmap->nested_bounds_set);
     print_bool(pmap->disable_jop);
     print_bool(pmap->reserved11);
-    print_x8(pmap->type);
+    print_x8(pmap->type);*/
+    
 }
 
 #endif /* pmap_h */

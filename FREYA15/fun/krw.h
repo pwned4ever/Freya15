@@ -12,6 +12,7 @@
 #include <mach/mach.h>
 
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -82,6 +83,8 @@ void dothestage2(void);
 uint64_t testthekcall(void);
 
 extern uint64_t proc_set_ucred_func;
+bool shouldRestore(void);
+extern bool newTFcheckMyRemover4me;
 
 //void unset_groot(uint64_t proc_unset);
 //extern uint64_t groot_ogucredof_proc;

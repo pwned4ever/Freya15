@@ -10,12 +10,16 @@
 		604D5A612AF97217000F4120 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5A602AF97217000F4120 /* AppDelegate.m */; };
 		604D5A642AF97217000F4120 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5A632AF97217000F4120 /* SceneDelegate.m */; };
 		604D5A672AF97217000F4120 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5A662AF97217000F4120 /* ViewController.m */; };
-		604D5A6C2AF97219000F4120 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 604D5A6B2AF97219000F4120 /* Assets.xcassets */; };
 		604D5A6F2AF97219000F4120 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 604D5A6D2AF97219000F4120 /* LaunchScreen.storyboard */; };
 		604D5A722AF9721A000F4120 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5A712AF9721A000F4120 /* main.m */; };
 		604D5A7B2AF97532000F4120 /* utilsZS.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5A7A2AF97532000F4120 /* utilsZS.m */; };
 		604D5B302AF98761000F4120 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 604D5B2F2AF98760000F4120 /* IOKit.framework */; };
 		604D5B342AF98798000F4120 /* offsetcache.m in Sources */ = {isa = PBXBuildFile; fileRef = 604D5B332AF98798000F4120 /* offsetcache.m */; };
+		6054C8D22B0D47CB00666A81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6054C8D12B0D47CB00666A81 /* Assets.xcassets */; };
+		6054C8D52B0D485300666A81 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6054C8D42B0D485300666A81 /* SettingsViewController.m */; };
+		6054C8D72B0D639600666A81 /* Big-Pun-So-Hard.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6054C8D62B0D639600666A81 /* Big-Pun-So-Hard.mp3 */; };
+		605D373A2B0DAA980011DE52 /* sys_darwin.c in Sources */ = {isa = PBXBuildFile; fileRef = 605D37392B0DAA980011DE52 /* sys_darwin.c */; };
+		605D373D2B0DAABF0011DE52 /* utilsZS.m in Sources */ = {isa = PBXBuildFile; fileRef = 605D373B2B0DAABE0011DE52 /* utilsZS.m */; };
 		60914A0F2B0923A100B43A58 /* NSData+GZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 60914A092B0923A100B43A58 /* NSData+GZip.m */; };
 		60914A102B0923A100B43A58 /* NSString+SHA256.m in Sources */ = {isa = PBXBuildFile; fileRef = 60914A0B2B0923A100B43A58 /* NSString+SHA256.m */; };
 		60914A162B09305800B43A58 /* tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 60914A152B09305800B43A58 /* tar.gz */; };
@@ -53,7 +57,6 @@
 		604D5A632AF97217000F4120 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		604D5A652AF97217000F4120 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		604D5A662AF97217000F4120 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		604D5A6B2AF97219000F4120 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		604D5A6E2AF97219000F4120 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		604D5A702AF9721A000F4120 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		604D5A712AF9721A000F4120 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -103,6 +106,15 @@
 		604D5B2F2AF98760000F4120 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		604D5B312AF98797000F4120 /* offsetcache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = offsetcache.h; sourceTree = "<group>"; };
 		604D5B332AF98798000F4120 /* offsetcache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = offsetcache.m; sourceTree = "<group>"; };
+		6054C8D02B0D3F5800666A81 /* cs_blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cs_blob.h; sourceTree = "<group>"; };
+		6054C8D12B0D47CB00666A81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6054C8D32B0D485300666A81 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		6054C8D42B0D485300666A81 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		6054C8D62B0D639600666A81 /* Big-Pun-So-Hard.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Big-Pun-So-Hard.mp3"; sourceTree = "<group>"; };
+		605D37382B0DAA980011DE52 /* mycommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mycommon.h; sourceTree = "<group>"; };
+		605D37392B0DAA980011DE52 /* sys_darwin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sys_darwin.c; sourceTree = "<group>"; };
+		605D373B2B0DAABE0011DE52 /* utilsZS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = utilsZS.m; path = util/utilsZS.m; sourceTree = "<group>"; };
+		605D373C2B0DAABE0011DE52 /* utilsZS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utilsZS.h; path = util/utilsZS.h; sourceTree = "<group>"; };
 		609149FC2B08B45900B43A58 /* libproc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libproc.h; sourceTree = "<group>"; };
 		609149FD2B08B4E700B43A58 /* proc_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proc_info.h; sourceTree = "<group>"; };
 		609149FE2B08B54800B43A58 /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
@@ -159,7 +171,6 @@
 		60D70C002AFDA07F00C44D2F /* debs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = debs; sourceTree = "<group>"; };
 		60D70C012AFDA07F00C44D2F /* unsigned */ = {isa = PBXFileReference; lastKnownFileType = folder; path = unsigned; sourceTree = "<group>"; };
 		60D934B02B073FB200AB2FB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		60EE28032B004F50004A7EE2 /* proc_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proc_internal.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,38 +205,45 @@
 		604D5A5E2AF97217000F4120 /* FREYA15 */ = {
 			isa = PBXGroup;
 			children = (
-				60D70BFF2AFDA07F00C44D2F /* binaries.tar */,
-				60914A152B09305800B43A58 /* tar.gz */,
-				60D70C002AFDA07F00C44D2F /* debs */,
-				60D70BFE2AFDA07F00C44D2F /* iosbinpack */,
-				60D70C012AFDA07F00C44D2F /* unsigned */,
-				604D5A782AF97532000F4120 /* util */,
 				604D5A5F2AF97217000F4120 /* AppDelegate.h */,
 				604D5A602AF97217000F4120 /* AppDelegate.m */,
-				60914A012B0923A100B43A58 /* libs */,
-				609149FC2B08B45900B43A58 /* libproc.h */,
-				604D5A622AF97217000F4120 /* SceneDelegate.h */,
-				604D5A632AF97217000F4120 /* SceneDelegate.m */,
-				60EE28032B004F50004A7EE2 /* proc_internal.h */,
-				604D5A652AF97217000F4120 /* ViewController.h */,
-				604D5A662AF97217000F4120 /* ViewController.m */,
+				6054C8D12B0D47CB00666A81 /* Assets.xcassets */,
+				6054C8D62B0D639600666A81 /* Big-Pun-So-Hard.mp3 */,
+				60D70BFF2AFDA07F00C44D2F /* binaries.tar */,
+				6054C8D02B0D3F5800666A81 /* cs_blob.h */,
+				60D70C002AFDA07F00C44D2F /* debs */,
+				604D5AB92AF979FD000F4120 /* FREYA15.entitlements */,
+				60B1517B2AFB6D0000F859D1 /* fun */,
+				604D5A702AF9721A000F4120 /* Info.plist */,
+				604D5B2D2AF9874B000F4120 /* IOKit.h */,
+				60D70BFE2AFDA07F00C44D2F /* iosbinpack */,
 				60914A002B08B5BC00B43A58 /* kern_control.h */,
 				609149FF2B08B5BC00B43A58 /* kernel_structs.h */,
-				609149FD2B08B4E700B43A58 /* proc_info.h */,
-				609149FE2B08B54800B43A58 /* route.h */,
-				60B1517B2AFB6D0000F859D1 /* fun */,
+				604D5A6D2AF97219000F4120 /* LaunchScreen.storyboard */,
 				604D5ABE2AF97A08000F4120 /* libkfd */,
 				604D5ABA2AF979FD000F4120 /* libkfd.h */,
-				604D5AB92AF979FD000F4120 /* FREYA15.entitlements */,
-				604D5A6B2AF97219000F4120 /* Assets.xcassets */,
+				609149FC2B08B45900B43A58 /* libproc.h */,
+				60914A012B0923A100B43A58 /* libs */,
+				604D5A712AF9721A000F4120 /* main.m */,
 				60D934AF2B073FB200AB2FB3 /* Main.storyboard */,
-				604D5A6D2AF97219000F4120 /* LaunchScreen.storyboard */,
+				605D37382B0DAA980011DE52 /* mycommon.h */,
+				605D37392B0DAA980011DE52 /* sys_darwin.c */,
+				605D373C2B0DAABE0011DE52 /* utilsZS.h */,
+				605D373B2B0DAABE0011DE52 /* utilsZS.m */,
 				60B1517A2AFB6CA600F859D1 /* mineekpf.h */,
 				604D5B312AF98797000F4120 /* offsetcache.h */,
 				604D5B332AF98798000F4120 /* offsetcache.m */,
-				604D5A702AF9721A000F4120 /* Info.plist */,
-				604D5B2D2AF9874B000F4120 /* IOKit.h */,
-				604D5A712AF9721A000F4120 /* main.m */,
+				609149FD2B08B4E700B43A58 /* proc_info.h */,
+				609149FE2B08B54800B43A58 /* route.h */,
+				604D5A622AF97217000F4120 /* SceneDelegate.h */,
+				604D5A632AF97217000F4120 /* SceneDelegate.m */,
+				6054C8D32B0D485300666A81 /* SettingsViewController.h */,
+				6054C8D42B0D485300666A81 /* SettingsViewController.m */,
+				60914A152B09305800B43A58 /* tar.gz */,
+				60D70C012AFDA07F00C44D2F /* unsigned */,
+				604D5A782AF97532000F4120 /* util */,
+				604D5A652AF97217000F4120 /* ViewController.h */,
+				604D5A662AF97217000F4120 /* ViewController.m */,
 			);
 			path = FREYA15;
 			sourceTree = "<group>";
@@ -493,8 +511,9 @@
 				60D70C052AFDA07F00C44D2F /* unsigned in Resources */,
 				60914A162B09305800B43A58 /* tar.gz in Resources */,
 				604D5A6F2AF97219000F4120 /* LaunchScreen.storyboard in Resources */,
+				6054C8D22B0D47CB00666A81 /* Assets.xcassets in Resources */,
 				60D70C022AFDA07F00C44D2F /* iosbinpack in Resources */,
-				604D5A6C2AF97219000F4120 /* Assets.xcassets in Resources */,
+				6054C8D72B0D639600666A81 /* Big-Pun-So-Hard.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +524,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				605D373D2B0DAABF0011DE52 /* utilsZS.m in Sources */,
 				60B151A82AFB6D0000F859D1 /* dropbear.m in Sources */,
 				60B151A92AFB6D0000F859D1 /* sandbox.m in Sources */,
 				60B151A52AFB6D0000F859D1 /* escalate.m in Sources */,
@@ -517,6 +537,7 @@
 				604D5B342AF98798000F4120 /* offsetcache.m in Sources */,
 				60B151AE2AFB6D0100F859D1 /* jailbreakd.c in Sources */,
 				60B151AC2AFB6D0100F859D1 /* libgeneral_exception.cpp in Sources */,
+				605D373A2B0DAA980011DE52 /* sys_darwin.c in Sources */,
 				60B151A72AFB6D0000F859D1 /* fun.m in Sources */,
 				604D5A672AF97217000F4120 /* ViewController.m in Sources */,
 				60B151AA2AFB6D0000F859D1 /* helpers.m in Sources */,
@@ -532,6 +553,7 @@
 				60B151B02AFB6D0100F859D1 /* offsets.m in Sources */,
 				604D5A642AF97217000F4120 /* SceneDelegate.m in Sources */,
 				60B151B42AFB6D0100F859D1 /* proc.c in Sources */,
+				6054C8D52B0D485300666A81 /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,6 +587,10 @@
 					"$(ARCHS_STANDARD)",
 					arm64e,
 				);
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconmess;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_SKIP_APP_STORE_DEPLOYMENT = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -627,6 +653,10 @@
 					"$(ARCHS_STANDARD)",
 					arm64e,
 				);
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconmess;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_SKIP_APP_STORE_DEPLOYMENT = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -682,13 +712,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FREYA15/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FR3Y4;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -699,10 +732,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/FREYA15/debs",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.p4e.FREYA15;
+				MARKETING_VERSION = 1.0.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.p4e.freya15;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -715,13 +749,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FREYA15/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FR3Y4;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -732,10 +769,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/FREYA15/debs",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.p4e.FREYA15;
+				MARKETING_VERSION = 1.0.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.p4e.freya15;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

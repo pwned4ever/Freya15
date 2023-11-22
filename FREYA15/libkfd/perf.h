@@ -215,7 +215,7 @@ void perf_run(struct kfd* kfd)
     u64 kernel_slide = vn_kqfilter - kc->vn_kqfilter;
     u64 kernel_base = kc->kernel_base + kernel_slide;
     kfd->info.kernel.kernel_slide = kernel_slide;
-    print_x64(kfd->info.kernel.kernel_slide);
+   // print_x64(kfd->info.kernel.kernel_slide);
 
     u32 mh_header[2] = {};
     mh_header[0] = kread_sem_open_kread_u32(kfd, kernel_base);
@@ -286,7 +286,7 @@ void perf_run(struct kfd* kfd)
 
     u64 gPhysSize_kaddr = kc->gPhysSize + kernel_slide;
     kread((u64)(kfd), gPhysSize_kaddr, &kfd->info.kernel.gPhysSize, sizeof(kfd->info.kernel.gPhysSize));
-    print_x64(kfd->info.kernel.gPhysSize);
+    //print_x64(kfd->info.kernel.gPhysSize);
 
     assert(kfd->info.kernel.current_pmap);
     u64 ttbr0_va_kaddr = kfd->info.kernel.current_pmap + static_offsetof(pmap, tte);

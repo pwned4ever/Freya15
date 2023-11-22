@@ -2,7 +2,7 @@
 //  SceneDelegate.h
 //  FREYA15
 //
-//  Created by Marcel Cianchino on 2023-11-06.
+//  Created by Marcel  on 2023-11-06.
 //
 
 #import <UIKit/UIKit.h>

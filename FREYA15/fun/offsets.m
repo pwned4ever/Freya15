@@ -9,25 +9,7 @@
 #include <UIKit/UIKit.h>
 #include <Foundation/Foundation.h>
 #include <sys/utsname.h>
-/*
- temp set
- off_kalloc_data_external = 0x;//done
- off_kfree_data_external =  0x;//done
- off_add_x0_x0_0x40_ret = 0x;//done
- off_empty_kdata_page = 0x + 0x100;//done
- off_trustcache = 0x;//done
- off_gphysbase = 0x;//done
- off_gphyssize = 0x;//???;//not done yet //??
- off_pmap_enter_options_addr = 0x;//done
- off_allproc = 0x;// done
- 
- off_pmap_find_phys = 0x;//done
- off_ml_phys_read_data = 0x;//done
- off_ml_phys_write_data = 0x;//done
- off_zm_fix_addr_kalloc =  0x;// done
 
- 
- */
 uint32_t off_p_list_le_prev = 0;
 uint32_t off_p_name = 0;
 uint32_t off_p_pid = 0;
@@ -102,27 +84,20 @@ char *get_current_deviceModel(void){
     static NSDictionary* deviceNamesByCode = nil;
     if (!deviceNamesByCode) {
         deviceNamesByCode = @{ @"iPhone8,1" : @"iPhone 6S",         //
-                               @"iPhone8,2" : @"iPhone 6S Plus",    //
-                               @"iPhone8,4" : @"iPhone SE",         //
-                               @"iPhone9,1" : @"iPhone 7",          //
-                               @"iPhone9,3" : @"iPhone 7",          //
-                               @"iPhone9,2" : @"iPhone 7 Plus",     //
-                               @"iPhone9,4" : @"iPhone 7 Plus",     //
-                               @"iPhone10,1": @"iPhone 8",          // CDMA
-                               @"iPhone10,4": @"iPhone 8",          // GSM
-                               @"iPhone10,2": @"iPhone 8 Plus",     // CDMA
-                               @"iPhone10,5": @"iPhone 8 Plus",     // GSM
-                               @"iPhone10,3": @"iPhone X",          // CDMA
-                               @"iPhone10,6": @"iPhone X",          // GSM
-                               @"iPhone11,2": @"iPhone XS",         //
-                               @"iPhone11,4": @"iPhone XS Max",     //
-                               @"iPhone11,6": @"iPhone XS Max",     // China
-                               @"iPhone11,8": @"iPhone XR",         //
-                               @"iPhone12,1": @"iPhone 11",         //
-                               @"iPhone12,3": @"iPhone 11 Pro",     //
-                               @"iPhone12,5": @"iPhone 11 Pro Max", //
-                               @"iPad7,11"   : @"iPad 7 WiFi",          // 5th Generation iPad (iPad Air) - Wifi
-                               @"iPad7,12"   : @"iPad 7 Cellular",          // 5th Generation iPad (iPad Air) - Wifi
+                              @"iPhone8,2" : @"iPhone 6S Plus",    //
+                              @"iPhone8,4" : @"iPhone SE",         //
+                              @"iPhone9,1" : @"iPhone 7",          //
+                              @"iPhone9,3" : @"iPhone 7",          //
+                              @"iPhone9,2" : @"iPhone 7 Plus",     //
+                              @"iPhone9,4" : @"iPhone 7 Plus",     //
+                              @"iPhone10,1": @"iPhone 8",          // CDMA
+                              @"iPhone10,4": @"iPhone 8",          // GSM
+                              @"iPhone10,2": @"iPhone 8 Plus",     // CDMA
+                              @"iPhone10,5": @"iPhone 8 Plus",     // GSM
+                              @"iPhone10,3": @"iPhone X",          // CDMA
+                              @"iPhone10,6": @"iPhone X",          // GSM
+                               @"iPad7,11"   : @"iPad 7 WiFi",          // 7th Generation iPad (iPad Air) - Wifi
+                               @"iPad7,12"   : @"iPad 7 Cellular",          // 7th Generation iPad (iPad Air) - Wifi
                                @"iPad4,1"   : @"iPad Air",          // 5th Generation iPad (iPad Air) - Wifi
                                @"iPad4,2"   : @"iPad Air",          // 5th Generation iPad (iPad Air) - Cellular
                                @"iPad4,4"   : @"iPad Mini",         // (2nd Generation iPad Mini - Wifi)
@@ -276,8 +251,8 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
     
     //AIR 2//iPad 7 WiFi
     if ([device  isEqual: @"iPad 7 WiFi"] || [device  isEqual: @"iPad 7 Cellular"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-            // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
+            util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
 
             off_kalloc_data_external = 0xFFFFFFF0071C5CC8;//done me
             off_kfree_data_external = 0xFFFFFFF0071C6434;//done me
@@ -295,14 +270,15 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF0072D38A0;//done me
             off_zm_fix_addr_kalloc = 0xFFFFFFF00713A530;//done me
             
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-        } else {// printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+        } else {
+            util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
             
         }
 
     } else if ([device  isEqual: @"iPad Air 2 WiFi"] || [device  isEqual: @"iPad Air 2 Cellular"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
             off_kalloc_data_external = 0xfffffff00716Cf84;
             off_kfree_data_external = 0xFFFFFFF00716d6fC;
 
@@ -319,16 +295,15 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF00727CB64;
             off_zm_fix_addr_kalloc =  0xFFFFFFF0070E4528;// done
 
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-        } else {// printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+        } else {util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
             
         }
 
     } else if ([device  isEqual: @"iPhone 6S"]) {
-           // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
+           util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF007188AE8;
             off_kfree_data_external = 0xFFFFFFF007189254;
             off_add_x0_x0_0x40_ret = 0xFFFFFFF005C2AEC0; // AppleS5L8920XFPWM
@@ -343,84 +318,8 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF007295390;
             
             off_zm_fix_addr_kalloc =  0xFFFFFFF007137450;// done
-        } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
-
-        }
-    } else if ([device  isEqual: @"iPhone 6S Plus"]) {
-        
-        
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-            off_kalloc_data_external = 0xFFFFFFF0071D4848;//done
-            off_kfree_data_external =  0xFFFFFFF0071D4EB4;//done
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF00596A60C;//done
-            off_empty_kdata_page = 0xFFFFFFF007824000 + 0x100;//done
-            off_trustcache = 0xFFFFFFF0078BA570;//done
-            off_gphysbase = 0xFFFFFFF00714E860;//done
-            off_gphyssize = 0xFFFFFFF00714CB18;//??? FFFFFFF00714E870;//not done yet //??
-            off_pmap_enter_options_addr = 0xFFFFFFF0072CA294;//done
-            off_allproc = 0xFFFFFFF00789A198;// done
-            off_pmap_find_phys = 0xFFFFFFF0072D1198;//done
-            off_ml_phys_read_data = 0xFFFFFFF0072E25BC;//done
-            off_ml_phys_write_data = 0xFFFFFFF0072E2824;//done
-            off_zm_fix_addr_kalloc =  0xFFFFFFF007137450;// done
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.7.3")) {
-           // printf("[i] %s offsets selected for iOS 15.7.3\n", device.UTF8String);
-            off_kalloc_data_external = 0xFFFFFFF00719762C;//done
-            off_kfree_data_external =  0xFFFFFFF007197C98;//done
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF005B3460C;//APPLEARMPE
-            off_empty_kdata_page = 0xFFFFFFF0077E0000 + 0x100;//done
-            off_trustcache = 0xFFFFFFF007876530;//done
-            off_gphysbase = 0xFFFFFFF00714D6E8;//done
-            off_gphyssize = 0xFFFFFFF0071149F8;//??? FFFFFFF00714E870;//not done yet //??
-            off_pmap_enter_options_addr = 0xFFFFFFF00728C7F4;//done
-            off_allproc = 0xFFFFFFF007856188;// done
-            off_pmap_find_phys = 0xFFFFFFF00729341C;//done
-            off_ml_phys_read_data = 0xFFFFFFF0072A3828;//done
-            off_ml_phys_write_data = 0xFFFFFFF0072A3A90;//done
-            off_zm_fix_addr_kalloc =  0xFFFFFFF0070FF3D0;
-            
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.3.1")) {//19D52
-           // printf("[i] %s offsets selected for iOS 15.3.1\n", device.UTF8String);
-            off_kalloc_data_external = 0xFFFFFFF00718D748;//done
-            off_kfree_data_external =  0xFFFFFFF00718DF0C;//done
-            off_add_x0_x0_0x40_ret = 0xfffffff005bd0054;//0xFFFFFFF005AD7FE0;
-            //FFFFFFF005AD80B4;//done AppleARMPE iphone 7 and 6s the same throughtout versions ios .1 - .7
-            off_empty_kdata_page = 0xFFFFFFF0077E0000 + 0x100;//done
-            off_trustcache = 0xFFFFFFF0078798C0;//done
-            off_gphysbase = 0xFFFFFFF0070CC0C0;//FFFFFFF00714E7C0;//done
-            off_gphyssize = 0xFFFFFFF0070CC0D8;//???;//not done yet //??
-            off_pmap_enter_options_addr = 0xFFFFFFF007284A8C;// done
-            off_allproc = 0xFFFFFFF007854100;//done
-            off_pmap_find_phys = 0xFFFFFFF00728B380;//0xFFFFFFF00728B920;//done //FFFFFFF00717CE14
-            off_ml_phys_read_data = 0xFFFFFFF00729BB60;//done
-            off_ml_phys_write_data = 0xFFFFFFF00729BDE4;// done
-            off_zm_fix_addr_kalloc =  0xFFFFFFF007106520;// done
-            
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-           // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
-
-             off_kalloc_data_external = 0xFFFFFFF007188AE8;
-             off_kfree_data_external = 0xFFFFFFF007189254;
-             
-             off_add_x0_x0_0x40_ret = 0xFFFFFFF005C2ADF0;//
-             off_empty_kdata_page = 0xFFFFFFF0077D8000 + 0x100;//done
-             off_trustcache = 0xFFFFFFF0078718C0;
-             off_gphysbase = 0xFFFFFFF0070CBA30;
-             off_gphyssize = 0xFFFFFFF0070CBA48;
-             off_pmap_enter_options_addr = 0xFFFFFFF00727DDE8;
-             off_allproc = 0xFFFFFFF00784C100;
-             off_pmap_find_phys = 0xFFFFFFF007284B58;
-             off_ml_phys_read_data = 0xFFFFFFF00729510C;
-             off_ml_phys_write_data = 0xFFFFFFF007295390;
-             off_zm_fix_addr_kalloc = 0xFFFFFFF0071024B8;
-
-             
-            
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.2") || SYSTEM_VERSION_EQUAL_TO(@"15.0.1")) {
-           // printf("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String);
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+           util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF0071C5E2C;
             off_kfree_data_external =  0xFFFFFFF0071C6638;
             off_add_x0_x0_0x40_ret = 0xFFFFFFF0059430B4;
@@ -435,15 +334,49 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF0072D6D40;
             off_zm_fix_addr_kalloc = 0xFFFFFFF00713A510;
         } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+           util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
+
+        }
+    } else if ([device  isEqual: @"iPhone 6S Plus"]) {
+        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
+             off_kalloc_data_external = 0xFFFFFFF007188AE8;
+             off_kfree_data_external = 0xFFFFFFF007189254;
+             off_add_x0_x0_0x40_ret = 0xFFFFFFF005C2ADF0;//
+             off_empty_kdata_page = 0xFFFFFFF0077D8000 + 0x100;//done
+             off_trustcache = 0xFFFFFFF0078718C0;
+             off_gphysbase = 0xFFFFFFF0070CBA30;
+             off_gphyssize = 0xFFFFFFF0070CBA48;
+             off_pmap_enter_options_addr = 0xFFFFFFF00727DDE8;
+             off_allproc = 0xFFFFFFF00784C100;
+             off_pmap_find_phys = 0xFFFFFFF007284B58;
+             off_ml_phys_read_data = 0xFFFFFFF00729510C;
+             off_ml_phys_write_data = 0xFFFFFFF007295390;
+             off_zm_fix_addr_kalloc = 0xFFFFFFF0071024B8;
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+           util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String);
+            off_kalloc_data_external = 0xFFFFFFF0071C5E2C;
+            off_kfree_data_external =  0xFFFFFFF0071C6638;
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0059430B4;
+            off_empty_kdata_page = 0xFFFFFFF007820000 + 0x100;
+            off_trustcache = 0xFFFFFFF0078B88C0;
+            off_gphysbase = 0xFFFFFFF007103B20;
+            off_gphyssize = 0xFFFFFFF007103B30;
+            off_pmap_enter_options_addr = 0xFFFFFFF0072BF940;
+            off_allproc = 0xFFFFFFF007893910;
+            off_pmap_find_phys = 0xFFFFFFF0072C602C;
+            off_ml_phys_read_data = 0xFFFFFFF0072D6ABC;
+            off_ml_phys_write_data = 0xFFFFFFF0072D6D40;
+            off_zm_fix_addr_kalloc = 0xFFFFFFF00713A510;
+        } else {
+           util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
         }
 
     } else if ([device  isEqual: @"iPhone SE"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-            // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
+            util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF007188AE8;//done
             off_kfree_data_external =  0xFFFFFFF007189254;//done
             off_add_x0_x0_0x40_ret = 0xFFFFFFF005C8ADF0;//done
@@ -457,8 +390,8 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_read_data = 0xFFFFFFF00729510C;//done
             off_ml_phys_write_data = 0xFFFFFFF007295390;//done
             off_zm_fix_addr_kalloc =  0xFFFFFFF0071024B8;// done
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-            // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+            util_info("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF007188C4C;//done
             off_kfree_data_external =  0xFFFFFFF007189884;//done
             off_add_x0_x0_0x40_ret = 0xFFFFFFF005CA5DF0;//done
@@ -473,46 +406,15 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF00729877C;//done
             off_zm_fix_addr_kalloc =  0xFFFFFFF007102498;// done
 
-           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
+           util_info("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
         } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+           util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
         }
-
     } else if ([device  isEqual: @"iPhone 7"]) {
       
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-            // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-            off_kalloc_data_external = 0xFFFFFFF0071D4848;//done
-            off_kfree_data_external =  0xFFFFFFF0071D4EB4;//done
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF00596A60C;//done
-            off_empty_kdata_page = 0xFFFFFFF007824000 + 0x100;//done
-            off_trustcache = 0xFFFFFFF0078BA570;//done
-            off_gphysbase = 0xFFFFFFF00714E860;//done
-            off_gphyssize = 0xFFFFFFF00714CB18;//??? FFFFFFF00714E870;//not done yet //??
-            off_pmap_enter_options_addr = 0xFFFFFFF0072CA294;//done
-            off_allproc = 0xFFFFFFF00789A198;// done
-            
-            off_pmap_find_phys = 0xFFFFFFF0072D1198;//done
-            off_ml_phys_read_data = 0xFFFFFFF0072E25BC;//done
-            off_ml_phys_write_data = 0xFFFFFFF0072E2824;//done
-            off_zm_fix_addr_kalloc =  0xFFFFFFF007137450;// done
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.5")) {
-            off_kalloc_data_external = 0xFFFFFFF0071D4040;//done by twittter guy
-            off_kfree_data_external = 0xFFFFFFF0071D4BA8;//done by twittter guy
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C2AEC0;//done by twittter guy
-            off_empty_kdata_page = 0xFFFFFFF007820000 + 0x100;//done by twittter guy
-            off_trustcache = 0xFFFFFFF0078B6570;//done by twittter guy
-            off_gphysbase = 0xFFFFFFF00714E5C0;//done by twittter guy
-            off_gphyssize = 0xFFFFFFF00714E5C8;//done by twittter guy
-            off_pmap_enter_options_addr = 0xFFFFFFF0072C7BD0;//done by twittter guy
-            off_allproc = 0xFFFFFFF007896198; ////done by twittter guy
-            off_pmap_find_phys = 0xFFFFFFF0072CEAE4;//done by twittter guy
-            off_ml_phys_read_data = 0xFFFFFFF0072DFEB4;//done by twittter guy
-            off_ml_phys_write_data = 0xFFFFFFF0072E011C;////done by twittter guy
-            off_zm_fix_addr_kalloc = 0xFFFFFFF0071373E0;/////done by twittter guy
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-           // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
+           util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF0071C5CC8;
             off_kfree_data_external =  0xFFFFFFF0071C6434;
             off_add_x0_x0_0x40_ret = 0xFFFFFFF0059260B4;
@@ -526,8 +428,8 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_read_data = 0xFFFFFFF0072D361C;
             off_ml_phys_write_data = 0xFFFFFFF0072D38A0;
             off_zm_fix_addr_kalloc =  0xFFFFFFF00713A530;
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.2") || SYSTEM_VERSION_EQUAL_TO(@"15.0.1")) {
-           // printf("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String);
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+           util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF0071C5E2C;
             off_kfree_data_external =  0xFFFFFFF0071C6638;
             off_add_x0_x0_0x40_ret = 0xFFFFFFF0059430B4;//FFFFFFF005C37428
@@ -542,68 +444,13 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF0072D6D40;
             off_zm_fix_addr_kalloc = 0xFFFFFFF00713A510;
         } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+           util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
         }
     } else if ([device  isEqual: @"iPhone 7 Plus"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.7.3")) {
-           // printf("[i] %s offsets selected for iOS 15.7.3\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.6")) {
-           // printf("[i] %s offsets selected for iOS 15.6\n", device.UTF8String);
-//    { .task_threads_next = 0x388, .task_threads_prev = 0x390, .map = 0x3a0, .thread_id = 0x440, .object_size = 0x610 }, // iOS 15.4 - 15.7.2 arm64e
-
-            off_kalloc_data_external = 0xFFFFFFF007B91664;//
-            off_kfree_data_external = 0xFFFFFFF007B91F78;//
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
-            off_empty_kdata_page = 0xFFFFFFF009570000;//0xFFFFFFF009574000;//;
-            off_trustcache = 0xFFFFFFF009772F80;
-            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
-            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
-            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
-            off_allproc = 0xFFFFFFF009720BA0;
-            off_pmap_find_phys = 0xFFFFFFF007CA607C;
-            off_ml_phys_read_data = 0xFFFFFFF007CB9860;
-            off_ml_phys_write_data = 0xFFFFFFF007CB9B58;
-            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
-
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.3.1")) {
-           // printf("[i] %s offsets selected for iOS 15.3.1\n", device.UTF8String);
-            off_kalloc_data_external = 0xFFFFFFF007B91664;//
-            off_kfree_data_external = 0xFFFFFFF007B91F78;//
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
-            off_empty_kdata_page = 0xFFFFFFF009570000;//0xFFFFFFF009574000;//;
-            off_trustcache = 0xFFFFFFF009772F80;
-            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
-            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
-            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
-            off_allproc = 0xFFFFFFF009720BA0;
-            off_pmap_find_phys = 0xFFFFFFF007CA607C;
-            off_ml_phys_read_data = 0xFFFFFFF007CB9860;
-            off_ml_phys_write_data = 0xFFFFFFF007CB9B58;
-            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
-
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.2")) {
-            off_kalloc_data_external = 0xFFFFFFF0071CA924;
-            off_kfree_data_external = 0xFFFFFF0071CB0E8;
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF005C09428;//FFFFFFF005BB9EEC??
-            off_empty_kdata_page = 0xFFFFFFF007824000 + 0x100;//done
-            off_trustcache = 0xFFFFFFF0078BD900;
-            off_gphysbase = 0xFFFFFFF0071041B8;
-            off_gphyssize = 0xFFFFFFF0071041D0;
-
-            off_pmap_enter_options_addr = 0xFFFFFFF0072C1BC0;
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
             
-            off_allproc = 0xFFFFFFF007898120;
-            off_pmap_find_phys = 0xFFFFFFF0072C8D14;
-            off_ml_phys_read_data = 0xFFFFFFF00729510C;
-            off_ml_phys_write_data = 0xFFFFFFF007295390;
-            off_zm_fix_addr_kalloc = 0xFFFFFFF00713E598;
-            //
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-            
-            // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+            util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
 
             off_kalloc_data_external = 0xFFFFFFF0071C5CC8;//done me
             off_kfree_data_external = 0xFFFFFFF0071C6434;//done me
@@ -620,18 +467,29 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_read_data = 0xFFFFFFF0072D361C;//done me
             off_ml_phys_write_data = 0xFFFFFFF0072D38A0;//done me
             off_zm_fix_addr_kalloc = 0xFFFFFFF00713A530;//done me
-
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-            
-           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+            off_kalloc_data_external = 0xFFFFFFF0071C5E2C;    //0xFFFFFFF0071C5E2C
+            off_kfree_data_external =  0xFFFFFFF0071C6638;    //0xFFFFFFF0071C6638
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0059430B4;//
+            off_empty_kdata_page = 0xFFFFFFF007820000 + 0x100;//0xFFFFFFF007820000
+            off_trustcache = 0xFFFFFFF0078B88C0;              //0xFFFFFFF0078B88C0
+            off_gphysbase = 0xFFFFFFF007103B20;               //0xFFFFFFF007103B20
+            off_gphyssize = 0xFFFFFFF007103C18;               //0xFFFFFFF007103C18
+            off_pmap_enter_options_addr = 0xFFFFFFF0072BF940; //0xFFFFFFF0072BF940
+            off_allproc = 0xFFFFFFF007893910;
+            off_pmap_find_phys = 0xFFFFFFF0072C602C;          //0xFFFFFFF0072C602C
+            off_ml_phys_read_data = 0xFFFFFFF0072D6B70;       //0xFFFFFFF0072D6B70
+            off_ml_phys_write_data = 0xFFFFFFF0072D6D40;      //0xFFFFFFF0072D6D40
+            off_zm_fix_addr_kalloc = 0xFFFFFFF00713A510;
         } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+           util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
         }
 
+
     } else if ([device  isEqual: @"iPhone 8"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-           // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
+           util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
             /*
              off_kalloc_data_external = 0xFFFFFFF007B994E4; //done
              off_kfree_data_external = 0xFFFFFFF007B99804; //done
@@ -663,8 +521,8 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_read_data = 0xFFFFFFF007CBE2B4;
             off_ml_phys_write_data = 0xFFFFFFF007CBE5AC;
             off_zm_fix_addr_kalloc = 0xFFFFFFF0077EE718;
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.2") || SYSTEM_VERSION_EQUAL_TO(@"15.0.1")) {
-            //util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String); //19A404
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+            util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String); //19A404
             off_kalloc_data_external =  0xFFFFFFF007B95664;
             off_kfree_data_external =   0xFFFFFFF007B95984;
             off_add_x0_x0_0x40_ret = 0xFFFFFFF008269688;//0xFFFFFFF0083B7848; FFFFFFF0083B7324 , FFFFFFF0083B73A8 , FFFFFFF0083B7358
@@ -679,59 +537,22 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_write_data = 0xFFFFFFF007CBDB58;
             off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
         } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+           util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
         }
         
     } else if ([device  isEqual: @"iPhone 8 Plus"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.7.3")) {
-           // printf("[i] %s offsets selected for iOS 15.7.3\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.6")) {
-           // printf("[i] %s offsets selected for iOS 15.6\n", device.UTF8String);
-//    { .task_threads_next = 0x388, .task_threads_prev = 0x390, .map = 0x3a0, .thread_id = 0x440, .object_size = 0x610 }, // iOS 15.4 - 15.7.2 arm64e
-
-            off_kalloc_data_external = 0xFFFFFFF007B91664;//
-            off_kfree_data_external = 0xFFFFFFF007B91F78;//
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
-            off_empty_kdata_page = 0xFFFFFFF009570000;//0xFFFFFFF009574000;//;
-            off_trustcache = 0xFFFFFFF009772F80;
-            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
-            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
-            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
-            off_allproc = 0xFFFFFFF009720BA0;
-            off_pmap_find_phys = 0xFFFFFFF007CA607C;
-            off_ml_phys_read_data = 0xFFFFFFF007CB9860;
-            off_ml_phys_write_data = 0xFFFFFFF007CB9B58;
-            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
-
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.3.1")) {
-           // printf("[i] %s offsets selected for iOS 15.3.1\n", device.UTF8String);
-            off_kalloc_data_external = 0xFFFFFFF007B91664;//
-            off_kfree_data_external = 0xFFFFFFF007B91F78;//
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083B33B0;//0xFFFFFFF0083B3850;?
-            off_empty_kdata_page = 0xFFFFFFF009570000;//0xFFFFFFF009574000;//;
-            off_trustcache = 0xFFFFFFF009772F80;
-            off_gphysbase = 0xFFFFFFF0077B3AE8;//0xFFFFFFF0070CBA30;
-            off_gphyssize = 0xFFFFFFF0077B3BE8;//0xFFFFFFF0070CBA48;
-            off_pmap_enter_options_addr = 0xFFFFFFF007C9F098;
-            off_allproc = 0xFFFFFFF009720BA0;
-            off_pmap_find_phys = 0xFFFFFFF007CA607C;
-            off_ml_phys_read_data = 0xFFFFFFF007CB9860;
-            off_ml_phys_write_data = 0xFFFFFFF007CB9B58;
-            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
-
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
+        
+        if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
+           util_info("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
         } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+           util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
         }
 
     } else if ([device  isEqual: @"iPhone X"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.1")) {
-           // printf("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
+            util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF007B994E4;//done
             off_kfree_data_external = 0xFFFFFFF007B99D58;//done
             off_add_x0_x0_0x40_ret = 0xFFFFFFF0083BBD68;//0xFFFFFFF008524900;//????; FFFFFFF0083BB844//
@@ -745,12 +566,9 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_ml_phys_read_data = 0xFFFFFFF007CBE2B4; //done
             off_ml_phys_write_data = 0xFFFFFFF007CBE5AC;//   <- ix 15.1
             off_zm_fix_addr_kalloc = 0xFFFFFFF0077EE718;//   <- ix 15.1 & iphone 8 same?  15.1
-
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0.2") || SYSTEM_VERSION_EQUAL_TO(@"15.0.1")) {
-           // printf("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String);
-
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
+            
+        } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
+            util_info("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
             
             off_kalloc_data_external = 0xFFFFFFF007B91664;//
             off_kfree_data_external = 0xFFFFFFF007B91F78;//
@@ -767,39 +585,16 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_zm_fix_addr_kalloc = 0xFFFFFFF0077EA6F8;
             
         } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
+            util_info("[-] No matching offsets.\n");
+            // exit(EXIT_FAILURE);
         }
-    } else if ([device  isEqual: @"iPhone XS"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
-        } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
-        }
-    } else if ([device  isEqual: @"iPhone XS Max"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
-        } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
-        }
-
-    } else if ([device  isEqual: @"iPhone XR"]) {
-        if (SYSTEM_VERSION_EQUAL_TO(@"15.8")) {
-           // printf("[i] %s offsets selected for iOS 15.8\n", device.UTF8String);
-        } else if (SYSTEM_VERSION_EQUAL_TO(@"15.0")) {
-           // printf("[i] %s offsets selected for iOS 15.0\n", device.UTF8String);
-        } else {
-           // printf("[-] No matching offsets.\n");
-            exit(EXIT_FAILURE);
-        }
-
+        
+    } else {
+        util_info("[-] No offsets selected for %s\n", device.UTF8String);
     }
+
+
+    
 
 }
 
@@ -909,308 +704,6 @@ __TEXT_EXEC:__text:FFFFFFF00718924C                 B               sub_FFFFFFF0
 
 //DATA XREF: com.apple.driver.AppleARMPlatform:__text go into function goto next "AppleARMPE" look above in the add x0, x0//
  /*
-  
-  ; End of function AppleS5L8920XPWM_InitFunc_0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DE8
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC ; =============== S U B R O U T I N E =======================================
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC AppleS5L8920XPWM_TermFunc_0             ; DATA XREF: com.apple.driver.AppleS5L8920XPWM:__mod_term_func:FFFFFFF006DB5D88↓o
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC ; FUNCTION CHUNK AT com.apple.driver.AppleS5L8920XPWM:__stubs:FFFFFFF005CA6584 SIZE 0000000C BYTES
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DEC                 ADRP            X0, #unk_FFFFFFF0079AD198@PAGE
-                    THIS ------->>>>>>>>> :FFFFFFF005CA5DF0  <--THIS        ADD             X0, X0, #unk_FFFFFFF0079AD198@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DF4                 B               loc_FFFFFFF005CA6584
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DF4 ; End of function AppleS5L8920XPWM_TermFunc_0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DF4
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DF8 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DF8                 STP             X29, X30, [SP,#-0x10]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5DFC                 MOV             X29, SP
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E00                 ADRP            X1, #aApples5l8920xf@PAGE ; "AppleS5L8920XFPWM"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E04                 ADD             X1, X1, #aApples5l8920xf@PAGEOFF ; "AppleS5L8920XFPWM"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E08                 ADRP            X2, #qword_FFFFFFF006DB5CC0@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E0C                 LDR             X2, [X2,#qword_FFFFFFF006DB5CC0@PAGEOFF]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E10                 MOV             W3, #0xF0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E14                 BL              sub_FFFFFFF005CA6578
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E18                 ADRP            X8, #unk_FFFFFFF006DB6A10@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E1C                 ADD             X8, X8, #unk_FFFFFFF006DB6A10@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E20                 STR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E24                 LDP             X29, X30, [SP],#0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E28                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E2C ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E2C                 B               loc_FFFFFFF005CA6584
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E30 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E30                 STP             X29, X30, [SP,#-0x10]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E34                 MOV             X29, SP
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E38                 BL              sub_FFFFFFF005CA6560
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E3C                 ADRP            X8, #unk_FFFFFFF006DB6430@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E40                 ADD             X8, X8, #unk_FFFFFFF006DB6430@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E44                 STR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E48                 LDP             X29, X30, [SP],#0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E4C                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E50 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E50                 STP             X29, X30, [SP,#-0x10]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E54                 MOV             X29, SP
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E58                 BL              sub_FFFFFFF005CA6560
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E5C                 ADRP            X8, #unk_FFFFFFF006DB6430@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E60                 ADD             X8, X8, #unk_FFFFFFF006DB6430@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E64                 STR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E68                 LDP             X29, X30, [SP],#0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E6C                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E70 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E70                 B               sub_FFFFFFF005CA656C
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E74 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E74                 B               sub_FFFFFFF005CA656C
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E78 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E78                 STP             X20, X19, [SP,#-0x20]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E7C                 STP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E80                 ADD             X29, SP, #0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E84                 MOV             X19, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E88                 BL              sub_FFFFFFF005CA656C
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E8C                 ADRP            X0, #unk_FFFFFFF006DB6AC8@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E90                 ADD             X0, X0, #unk_FFFFFFF006DB6AC8@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E94                 MOV             X1, X19
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E98                 MOV             W2, #0xF0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5E9C                 LDP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EA0                 LDP             X20, X19, [SP],#0x20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EA4                 B               loc_FFFFFFF005CA6524
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EA8 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EA8                 MOV             X2, X1
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EAC                 MOV             X1, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EB0                 ADRP            X0, #unk_FFFFFFF006DB6AC8@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EB4                 ADD             X0, X0, #unk_FFFFFFF006DB6AC8@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EB8                 B               loc_FFFFFFF005CA6524
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EBC ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EBC                 ADRP            X0, #unk_FFFFFFF0079AD1C0@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EC0                 ADD             X0, X0, #unk_FFFFFFF0079AD1C0@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EC4                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EC8 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EC8                 STP             X29, X30, [SP,#-0x10]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5ECC                 MOV             X29, SP
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5ED0                 ADRP            X1, #aApples5l8920xf@PAGE ; "AppleS5L8920XFPWM"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5ED4                 ADD             X1, X1, #aApples5l8920xf@PAGEOFF ; "AppleS5L8920XFPWM"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5ED8                 ADRP            X2, #qword_FFFFFFF006DB5CC0@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EDC                 LDR             X2, [X2,#qword_FFFFFFF006DB5CC0@PAGEOFF]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EE0                 MOV             W3, #0xF0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EE4                 BL              sub_FFFFFFF005CA6578
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EE8                 ADRP            X8, #unk_FFFFFFF006DB6A10@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EEC                 ADD             X8, X8, #unk_FFFFFFF006DB6A10@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EF0                 STR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EF4                 LDP             X29, X30, [SP],#0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EF8                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EFC ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5EFC                 STP             X20, X19, [SP,#-0x20]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F00                 STP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F04                 ADD             X29, SP, #0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F08                 ADRP            X0, #unk_FFFFFFF006DB6AC8@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F0C                 ADD             X0, X0, #unk_FFFFFFF006DB6AC8@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F10                 MOV             W1, #0xF0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F14                 BL              sub_FFFFFFF005CA6530
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F18                 MOV             X19, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F1C                 ADRP            X20, #unk_FFFFFFF0079AD1C0@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F20                 ADD             X20, X20, #unk_FFFFFFF0079AD1C0@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F24                 MOV             X1, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F28                 BL              sub_FFFFFFF005CA6560
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F2C                 ADRP            X8, #unk_FFFFFFF006DB6430@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F30                 ADD             X8, X8, #unk_FFFFFFF006DB6430@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F34                 STR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F38                 MOV             X0, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F3C                 BL              sub_FFFFFFF005CA65E4
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F40                 MOV             X0, X19
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F44                 LDP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F48                 LDP             X20, X19, [SP],#0x20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F4C                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F50 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F50                 MOV             X1, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F54                 ADRP            X0, #unk_FFFFFFF006DB6AC8@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F58                 ADD             X0, X0, #unk_FFFFFFF006DB6AC8@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F5C                 B               sub_FFFFFFF005CA6530
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F60 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F60                 STP             X20, X19, [SP,#-0x20]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F64                 STP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F68                 ADD             X29, SP, #0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F6C                 MOV             X19, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F70                 ADRP            X20, #unk_FFFFFFF0079AD1C0@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F74                 ADD             X20, X20, #unk_FFFFFFF0079AD1C0@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F78                 MOV             X1, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F7C                 BL              sub_FFFFFFF005CA6560
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F80                 ADRP            X8, #unk_FFFFFFF006DB6430@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F84                 ADD             X8, X8, #unk_FFFFFFF006DB6430@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F88                 STR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F8C                 MOV             X0, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F90                 BL              sub_FFFFFFF005CA65E4
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F94                 MOV             X0, X19
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F98                 LDP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5F9C                 LDP             X20, X19, [SP],#0x20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FA0                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FA4 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FA4                 STP             X20, X19, [SP,#-0x20]!
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FA8                 STP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FAC                 ADD             X29, SP, #0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FB0                 MOV             X19, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FB4                 ADRP            X20, #unk_FFFFFFF0079AD1C0@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FB8                 ADD             X20, X20, #unk_FFFFFFF0079AD1C0@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FBC                 MOV             X1, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FC0                 BL              sub_FFFFFFF005CA6560
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FC4                 ADRP            X8, #unk_FFFFFFF006DB6430@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FC8                 ADD             X8, X8, #unk_FFFFFFF006DB6430@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FCC                 STR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FD0                 MOV             X0, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FD4                 BL              sub_FFFFFFF005CA65E4
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FD8                 MOV             X0, X19
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FDC                 LDP             X29, X30, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FE0                 LDP             X20, X19, [SP],#0x20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FE4                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FE8 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FE8                 SUB             SP, SP, #0x30
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FEC                 STP             X20, X19, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FF0                 STP             X29, X30, [SP,#0x20]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FF4                 ADD             X29, SP, #0x20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FF8                 MOV             X20, X1
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA5FFC                 MOV             X19, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6000                 ADRP            X0, #aComAppleDriver_13@PAGE ; "com.apple.driver.AppleS5L8920XFPWM"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6004                 ADD             X0, X0, #aComAppleDriver_13@PAGEOFF ; "com.apple.driver.AppleS5L8920XFPWM"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6008                 ADRP            X1, #aDefault_7@PAGE ; "default"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA600C                 ADD             X1, X1, #aDefault_7@PAGEOFF ; "default"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6010                 BL              sub_FFFFFFF005CA6620
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6014                 STR             X0, [X19,#0x88]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6018                 CBNZ            X0, loc_FFFFFFF005CA603C
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA601C                 ADRP            X0, #dword_FFFFFFF00549B780@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6020                 ADD             X0, X0, #dword_FFFFFFF00549B780@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6024                 ADRP            X1, #qword_FFFFFFF006DB5D40@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6028                 LDR             X1, [X1,#qword_FFFFFFF006DB5D40@PAGEOFF]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA602C                 ADRP            X3, #aUnableToCreate_1@PAGE ; "Unable to create log handle for AppleS5"...
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6030                 ADD             X3, X3, #aUnableToCreate_1@PAGEOFF ; "Unable to create log handle for AppleS5"...
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6034                 MOV             W2, #0x10
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6038                 BL              sub_FFFFFFF005CA65F0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA603C
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA603C loc_FFFFFFF005CA603C                    ; CODE XREF: com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6018↑j
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA603C                 ADRP            X8, #qword_FFFFFFF006DB5D00@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6040                 LDR             X8, [X8,#qword_FFFFFFF006DB5D00@PAGEOFF]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6044                 LDR             X1, [X8]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6048                 MOV             X0, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA604C                 BL              sub_FFFFFFF005CA659C
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6050                 STR             X0, [X19,#0x90]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6054                 CBZ             X0, loc_FFFFFFF005CA6108
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6058                 LDR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA605C                 LDR             X8, [X8,#0x3D0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6060                 MOV             W1, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6064                 MOV             W2, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6068                 BLR             X8
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA606C                 STR             X0, [X19,#0x98]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6070                 CBZ             X0, loc_FFFFFFF005CA6108
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6074                 LDR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6078                 LDR             X8, [X8,#0x78]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA607C                 BLR             X8
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6080                 STR             X0, [X19,#0xA0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6084                 BL              sub_FFFFFFF005CA6500
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6088                 STR             X0, [X19,#0xB8]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA608C                 STR             WZR, [X19,#0xB0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6090                 ADRP            X8, #qword_FFFFFFF006DB5D38@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6094                 LDR             X8, [X8,#qword_FFFFFFF006DB5D38@PAGEOFF]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6098                 LDR             X8, [X8,#0x2C0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA609C                 MOV             X0, X19
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60A0                 MOV             X1, X20
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60A4                 BLR             X8
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60A8                 MOV             X8, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60AC                 MOV             W0, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60B0                 CBZ             W8, loc_FFFFFFF005CA6108
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60B4                 LDR             X8, [X19,#0x88]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60B8                 ADRP            X9, #qword_FFFFFFF006DB5D40@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60BC                 LDR             X9, [X9,#qword_FFFFFFF006DB5D40@PAGEOFF]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60C0                 CMP             X8, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60C4                 CSEL            X1, X9, X8, EQ
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60C8                 LDR             X8, [X19,#0xA0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60CC                 STR             X8, [SP]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60D0                 ADRP            X0, #dword_FFFFFFF00549B780@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60D4                 ADD             X0, X0, #dword_FFFFFFF00549B780@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60D8                 ADRP            X3, #aPwmbaseaddress@PAGE ; "_pwmBaseAddress: %#lx\n"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60DC                 ADD             X3, X3, #aPwmbaseaddress@PAGEOFF ; "_pwmBaseAddress: %#lx\n"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60E0                 MOV             W2, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60E4                 BL              sub_FFFFFFF005CA65F0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60E8                 BL              sub_FFFFFFF005CA6554
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60EC                 STR             X0, [X19,#0xC0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60F0                 LDR             X1, [X19,#0x90]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60F4                 LDR             X8, [X19]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60F8                 LDR             X8, [X8,#0x540]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA60FC                 MOV             X0, X19
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6100                 BLR             X8
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6104                 MOV             W0, #1
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6108
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6108 loc_FFFFFFF005CA6108                    ; CODE XREF: com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6054↑j
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6108                                         ; com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6070↑j ...
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6108                 LDP             X29, X30, [SP,#0x20]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA610C                 LDP             X20, X19, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6110                 ADD             SP, SP, #0x30
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6114                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6118 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6118                 LDR             X0, [X0,#0x90]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA611C                 LDR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6120                 LDR             X2, [X8,#0x558]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6124                 ADRP            X1, #aNclk_1@PAGE ; "nclk"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6128                 ADD             X1, X1, #aNclk_1@PAGEOFF ; "nclk"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA612C                 BR              X2
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6130 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6130                 TBZ             W4, #0, loc_FFFFFFF005CA6140
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6134                 MOV             W0, #0x2C7
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6138                 MOVK            W0, #0xE000,LSL#16
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA613C                 RET
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6140 ; ---------------------------------------------------------------------------
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6140
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6140 loc_FFFFFFF005CA6140                    ; CODE XREF: com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6130↑j
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6140                 SUB             SP, SP, #0x60
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6144                 STP             X24, X23, [SP,#0x20]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6148                 STP             X22, X21, [SP,#0x30]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA614C                 STP             X20, X19, [SP,#0x40]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6150                 STP             X29, X30, [SP,#0x50]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6154                 ADD             X29, SP, #0x50
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6158                 MOV             X20, X3
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA615C                 MOV             X21, X2
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6160                 MOV             X19, X0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6164                 LDR             W22, [X1]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6168                 LDR             X8, [X0,#0x88]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA616C                 ADRP            X9, #qword_FFFFFFF006DB5D40@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6170                 LDR             X9, [X9,#qword_FFFFFFF006DB5D40@PAGEOFF]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6174                 CMP             X8, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6178                 CSEL            X1, X9, X8, EQ
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA617C                 STP             X3, XZR, [SP,#0x10]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6180                 STP             X22, X2, [SP]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6184                 ADRP            X0, #dword_FFFFFFF00549B780@PAGE
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6188                 ADD             X0, X0, #dword_FFFFFFF00549B780@PAGEOFF
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA618C                 ADRP            X3, #aULluLluD@PAGE ; "(%u, %llu, %llu, %d)"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6190                 ADD             X3, X3, #aULluLluD@PAGEOFF ; "(%u, %llu, %llu, %d)"
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6194                 MOV             W2, #2
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA6198                 BL              sub_FFFFFFF005CA65F0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA619C                 LDR             X0, [X19,#0xB8]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61A0                 BL              sub_FFFFFFF005CA650C
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61A4                 LDR             W8, [X19,#0xB0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61A8                 CBNZ            W8, loc_FFFFFFF005CA61E4
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61AC                 LDR             X0, [X19,#0x90]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61B0                 LDR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61B4                 LDR             X8, [X8,#0x570]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61B8                 MOV             W1, #1
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61BC                 MOV             X2, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61C0                 MOV             W3, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61C4                 BLR             X8
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61C8                 LDR             X0, [X19,#0x90]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61CC                 LDR             X8, [X0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61D0                 LDR             X8, [X8,#0x568]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61D4                 MOV             W1, #1
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61D8                 MOV             W2, #0
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61DC                 BLR             X8
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61E0                 LDR             W8, [X19,#0xB0]
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61E4
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61E4 loc_FFFFFFF005CA61E4                    ; CODE XREF: com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61A8↑j
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61E4                 MOV             W9, #1
-  com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005CA61E8                 LSL             W9, W9, W22
-  
-  
-  
-  /////
-  
-  
  :FFFFFFF0059430B4                 ADD             X0, X0, #unk_FFFFFFF0079E1040@PAGEOFF
  com.apple.driver.AppleARMPlatform:__text:FFFFFFF0059430B8                 RET
  com.apple.driver.AppleARMPlatform:__text:FFFFFFF0059430BC ; ---------------------------------------------------------------------------

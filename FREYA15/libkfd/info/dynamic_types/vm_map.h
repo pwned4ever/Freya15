@@ -263,7 +263,7 @@ struct _vm_map {
 
 void print_vm_map(struct kfd* kfd, struct _vm_map* map, u64 map_kaddr)
 {
-    print_message("struct _vm_map @ %016llx", map_kaddr);
+   /* print_message("struct _vm_map @ %016llx", map_kaddr);
     print_x64(map->hdr.links.prev);
     print_x64(map->hdr.links.next);
     print_x64(map->hdr.links.start);
@@ -304,6 +304,8 @@ void print_vm_map(struct kfd* kfd, struct _vm_map* map, u64 map_kaddr)
     print_bool(map->never_faults);
     print_bool(map->uses_user_ranges);
     print_u32(map->timestamp);
+    */
+    
 }
 
 #endif /* vm_map_h */

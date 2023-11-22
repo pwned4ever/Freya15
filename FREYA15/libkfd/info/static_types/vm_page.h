@@ -157,9 +157,9 @@ void print_vm_page(struct kfd* kfd, struct vm_page* page, u64 page_kaddr)
     assert(vm_page_array_ending_addr);
     assert(vm_first_phys_ppnum);
 
-    print_message("struct vm_page @ %016llx", page_kaddr);
+   // print_message("struct vm_page @ %016llx", page_kaddr);
     struct vm_page* p = (struct vm_page*)(page_kaddr);
-    print_x32(VM_PAGE_GET_PHYS_PAGE(p));
+  /*  print_x32(VM_PAGE_GET_PHYS_PAGE(p));
     print_x64(VM_PAGE_OBJECT(page));
     print_x64(page->vmp_offset);
     print_u32(page->vmp_q_state);
@@ -190,7 +190,8 @@ void print_vm_page(struct kfd* kfd, struct vm_page* page, u64 page_kaddr)
     print_bool(page->vmp_restart);
     print_bool(page->vmp_unusual);
     print_bool(page->vmp_reusable);
-    print_bool(page->vmp_written_by_kernel);
+    print_bool(page->vmp_written_by_kernel);*/
+    
 }
 
 #endif /* vm_page_h */
