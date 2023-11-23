@@ -320,9 +320,51 @@ int justinstalledcydia = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [[NSUserDefaults standardUserDefaults] setValue:@(NO) forKey:@"_UIConstraintBasedLayoutLogUnsatisfiable"];
     currentViewController = self;
     sharedController = self;
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+
+    gradient.frame = self.freyabackgroundview.bounds;
+
+       //gradient.colors = @[(id)[[UIColor colorWithRed:0.26 green:0.81 blue:0.64 alpha:1.0] CGColor], (id)[[UIColor colorWithRed:0.09 green:0.35 blue:0.62 alpha:1.0] CGColor]];
+    gradient.colors = @[(id)[
+                            [UIColor colorWithRed:0.09 green:0.22 blue:0.55 alpha:1.0] CGColor],
+                        (id)[
+                            [UIColor colorWithRed:0.29 green:0.55 blue:0.22 alpha:1.0] CGColor]];
+    [self.freyabackgroundview.layer insertSublayer:gradient atIndex:0];
+//    [self.freyabackgroundview.layer insertSublayer:gradient atIndex:0];
+       
+    
+    /*    CAGradientLayer *gradienttextview = [CAGradientLayer layer];
+
+//    gradienttextview.frame = self.tvViewLog.bounds;
+   gradienttextview.frame = self.tvViewLog.bounds;
+
+       //gradient.colors = @[(id)[[UIColor colorWithRed:0.26 green:0.81 blue:0.64 alpha:1.0] CGColor], (id)[[UIColor colorWithRed:0.09 green:0.35 blue:0.62 alpha:1.0] CGColor]];
+    gradienttextview.colors = @[(id)[
+                            [UIColor colorWithRed:0.29 green:0.22 blue:0.55 alpha:1.0] CGColor],
+                        (id)[
+                            [UIColor colorWithRed:0.29 green:0.25 blue:0.22 alpha:1.0] CGColor]];
+    
+    //[self.tvViewLog.layer insertSublayer:gradienttextview atIndex:0];
+    [self.tvViewLog.layer insertSublayer:gradienttextview atIndex:0];// insertSublayer:gradienttextview atIndex:0];
+    // [self.tvViewLog.backgroundColor initWithCGColor: CFBridgingRetain(gradienttextview)];// insertSublayer:gradienttextview atIndex:0];
+//stackviewtextviewonly; *textviewStackViewView
+       
+*/
+       //0 = Cydia//1
+   //    [_Cydia_Outlet sendActionsForControlEvents:UIControlEventTouchUpInside];
+       //0 = MS//1 = MS2//2 = VS//3 = SP//4 = TW
+      // UIColor *white = [UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:1.0];;
+      // UIColor *grey = [UIColor colorWithRed:0.30 green:0.00 blue:0.30 alpha:0.5];;
+//       double whatsmykoreNUMBER = kCFCoreFoundationVersionNumber;
+
+    
+    
+    
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -338,9 +380,9 @@ int justinstalledcydia = 0;
     self.tvViewLog.layer.borderColor = UIColor.greenColor.CGColor;
 
     [self.btnJb setEnabled:TRUE];
-    self.btnJb.layer.cornerRadius = 15;
+   // self.btnJb.layer.cornerRadius = 15;
    // self.btnJb.backgroundColor = UIColor.blueColor;
-    self.btnJb.backgroundColor = UIColor.blackColor;
+   // self.btnJb.backgroundColor = UIColor.blackColor;
     [self.btnJb setTitleColor:UIColor.greenColor forState:normal];// = UIColor.blackColor;
     sys_init();
     const char *yourdevice = device.UTF8String;//print_devicemodel();
@@ -365,7 +407,7 @@ int justinstalledcydia = 0;
         [self.btnJb setTitle:@"Jailbroken" forState:normal];
         [self.btnJb setAlpha:0.60];
         [self.btnJb setEnabled:false];
-        self.btnJb.backgroundColor = UIColor.blackColor;
+        //self.btnJb.backgroundColor = UIColor.blackColor;
         [self.btnJb setTitleColor:UIColor.redColor forState:UIControlStateDisabled];// = UIColor.blackColor;
         goto theend;
         // [[self btnJb] setEnabled:false];

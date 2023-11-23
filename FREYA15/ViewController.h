@@ -39,7 +39,9 @@ while (false)
 
 - (IBAction)touchLtweaks:(id)sender;
 - (IBAction)tocuhrestoreFS:(id)sender;
+@property (strong, nonatomic) IBOutlet UIStackView *stackviewtextviewonly;
 
+@property (strong, nonatomic) IBOutlet UIView *textviewStackViewView;
 @property (strong, nonatomic) IBOutlet UIButton *stopbtnMusic;
 @property (weak, nonatomic) IBOutlet UITextView *tvViewLog;
 @property (weak, nonatomic) IBOutlet UILabel *lblfreyaTitle;
@@ -47,6 +49,7 @@ while (false)
 @property (strong, nonatomic) IBOutlet UISwitch *fixfsswitch;
 @property (strong, nonatomic) IBOutlet UILabel *devicelbl;
 @property (strong, nonatomic) IBOutlet UILabel *versionlbl;
+@property (strong, nonatomic) IBOutlet UIView *freyabackgroundview;
 
 @property (strong, nonatomic) IBOutlet UISwitch *loadTweakSwitch;
 

